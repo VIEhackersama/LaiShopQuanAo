@@ -34,6 +34,12 @@ app:
     timeout-seconds: ${AI_TIMEOUT_SECONDS:60}
   media-root: ${MEDIA_ROOT:./media}
   search:
+    speech:
+      service-url: ${SPEECH_SERVICE_URL:http://clip-service:8001}
+      connect-timeout-seconds: ${SPEECH_CONNECT_TIMEOUT_SECONDS:3}
+      request-timeout-seconds: ${SPEECH_REQUEST_TIMEOUT_SECONDS:15}
+      fallback-on-error: ${SPEECH_FALLBACK_ON_ERROR:true}
+      fallback-text: ${SPEECH_FALLBACK_TEXT:Áo thun Everyday}
     openai:
       voice:
         enabled: ${OPENAI_VOICE_ENABLED:false}

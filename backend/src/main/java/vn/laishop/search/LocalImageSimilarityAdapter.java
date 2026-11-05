@@ -55,7 +55,7 @@ public class LocalImageSimilarityAdapter implements ImageSimilarityPort {
             @Value("${LOCAL_IMAGE_SEARCH_MIN_SCORE:0.35}") double minimumScore,
             @Value("${LOCAL_IMAGE_SEARCH_MAX_PIXELS:16000000}") long maximumPixels,
             @Value("${CLIP_SEARCH_ENABLED:true}") boolean clipEnabled,
-            @Value("${CLIP_SERVICE_URL:http://host.docker.internal:8001}") String clipServiceUrl) {
+            @Value("${CLIP_SERVICE_URL:http://clip-service:8001}") String clipServiceUrl) {
         if (!Double.isFinite(minimumScore) || minimumScore < 0 || minimumScore > 1) {
             throw new IllegalArgumentException("LOCAL_IMAGE_SEARCH_MIN_SCORE must be between 0 and 1");
         }
@@ -68,6 +68,7 @@ public class LocalImageSimilarityAdapter implements ImageSimilarityPort {
         this.clipEnabled = clipEnabled;
         this.clipServiceUrl = clipServiceUrl;
         this.httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(Duration.ofSeconds(3))
                 .build();
         this.objectMapper = new ObjectMapper();
@@ -82,17 +83,18 @@ public class LocalImageSimilarityAdapter implements ImageSimilarityPort {
                     return clipMatches;
                 }
             } catch (Exception ex) {
-                LOG.warn("CLIP search failed or service unavailable, falling back to RGB matching: {}", ex.getMessage());
+                LOG.warn("CLIP search failed or service unavailable, falling back to RGB matching: {}", ex.getMessage(), ex);
             }
         }
         return searchWithRgb(input);
     }
 
     private ImageMatches searchWithClip(ImageInput input) throws IOException, InterruptedException {
-        String boundary = "----WebKitFormBoundary" + System.currentTimeMillis();
+        String boundary = "Boundary" + java.util.UUID.randomUUID().toString().replace("-", "");
         byte[] body = buildMultipartBody(boundary, input);
 
         HttpRequest request = HttpRequest.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
                 .uri(URI.create(clipServiceUrl + "/embed"))
                 .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "multipart/form-data; boundary=" + boundary)

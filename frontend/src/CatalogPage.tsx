@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Camera, Microphone, MagnifyingGlass, SlidersHorizontal, ArrowUpRight, X } from '@phosphor-icons/react';
@@ -11,6 +11,9 @@ import { ProductCard } from './ProductCard';
 export function CatalogPage() {
   const [params, setParams] = useSearchParams();
   const [keyword, setKeyword] = useState(params.get('q') ?? '');
+  useEffect(() => {
+    setKeyword(params.get('q') ?? '');
+  }, [params.get('q')]);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [media, setMedia] = useState<'voice' | 'image' | null>(null);
   const categories = useQuery({ queryKey: ['categories'], queryFn: () => api('/categories', z.array(categorySchema), {}) });
@@ -19,8 +22,10 @@ export function CatalogPage() {
   const conditions = { categoryId: params.has('categoryId') ? Number(params.get('categoryId')) : null, sizes: params.getAll('sizes'), colors: params.getAll('colors'), minPrice: params.get('minPrice') ? Number(params.get('minPrice')) : null, maxPrice: params.get('maxPrice') ? Number(params.get('maxPrice')) : null, sort: params.get('sort') ?? 'RELEVANCE' };
   const results = useQuery({ queryKey: ['catalog', params.toString()], queryFn: async () => {
     if (queryId) {
-      const original = await api(`/search/queries/${queryId}?page=${page}&pageSize=24`, searchSchema, {});
-      if (![...params.keys()].some(key => !['queryId', 'page'].includes(key))) return original.products;
+
+      if (![...params.keys()].some(key => !['queryId', 'page'].includes(key))) {
+        return (await api(`/search/queries/${queryId}?page=${page}&pageSize=24`, searchSchema, {})).products;
+      }
       const path = `/search/queries/${queryId}/refine`;
       const result = await api(path, searchSchema, { method: 'POST', body: JSON.stringify({ conditions, page, pageSize: 24 }) });
       return result.products;
