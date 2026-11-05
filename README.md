@@ -1,4 +1,4 @@
-# Lai Shop
+# LaiShopQuanAo
 
 Website một shop: React + TypeScript, Spring Boot 3.5.16 / Java 21, PostgreSQL 17. MVC bốn tầng được ánh xạ View = React, Controller = Controller/Service, DAO = repository/JDBC, Model = 15 entity JPA.
 
@@ -35,7 +35,7 @@ npm ci
 npm run dev
 ```
 
-Mở `http://127.0.0.1:5173`. Vite proxy `/api` sang backend cổng 8080. Tự đăng ký tài khoản; không có tài khoản/mật khẩu demo cài sẵn. Seed gồm 6 sản phẩm, biến thể có giá riêng và ảnh SVG minh họa, không phải ảnh sản phẩm thật.
+Mở `http://127.0.0.1:5173`. Vite proxy `/api` sang backend cổng 8080. Tự đăng ký tài khoản; không có tài khoản/mật khẩu demo cài sẵn. Seed gồm 6 sản phẩm, biến thể có giá riêng và ảnh stock Pexels làm mẫu. Nguồn 10 ảnh và giấy phép nằm trong `frontend/public/catalog/photos/sources.json`.
 
 ## Hợp đồng và dữ liệu
 

@@ -24,4 +24,4 @@ export function ErrorMessage({ error }: { error: Error | null }) {
   if (!error) return null;
   return <div className="error" role="alert" data-testid="api-error"><p>{error.message}</p>{error instanceof ApiError && error.fields.map(field => <p key={field.field}>{field.field}: {field.message}</p>)}</div>;
 }
-export function Empty({ title, children }: { title: string; children: ReactNode }) { return <section className="empty"><p className="eyebrow">LAI SHOP</p><h2>{title}</h2>{children}<Link className="button" to="/">Khám phá sản phẩm</Link></section>; }
+export function Empty({ title, children }: { title: string; children: ReactNode }) { return <section className="empty"><p className="eyebrow">LaiShopQuanAo</p><h2>{title}</h2>{children}<Link className="button" to="/">Khám phá sản phẩm</Link></section>; }

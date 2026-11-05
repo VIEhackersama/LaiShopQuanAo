@@ -9,7 +9,7 @@ import org.springframework.context.annotation.*;
 
 @Configuration
 public class OpenApiConfig {
-    @Bean OpenAPI shopApi() { return new OpenAPI().info(new Info().title("Lai Shop API").version("1.0.0").description("Single-shop storefront. Cookie session authentication and CSRF header from /api/v1/auth/csrf are required for mutations. Money is a decimal string; checkout requires Idempotency-Key. Media providers are intentionally unconfigured.")); }
+    @Bean OpenAPI shopApi() { return new OpenAPI().info(new Info().title("LaiShopQuanAo API").version("1.0.0").description("Single-shop storefront. Cookie session authentication and CSRF header from /api/v1/auth/csrf are required for mutations. Money is a decimal string; checkout requires Idempotency-Key. Media providers are intentionally unconfigured.")); }
     @Bean OpenApiCustomizer errors() {
         return api -> {
             ObjectSchema schema=new ObjectSchema();
