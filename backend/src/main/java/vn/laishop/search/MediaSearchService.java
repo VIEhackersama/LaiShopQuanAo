@@ -34,16 +34,25 @@ public class MediaSearchService {
     }
     Capabilities capabilities() { return new Capabilities(!speech.isEmpty(),!image.isEmpty()); }
     private static ApiException unavailable() { return new ApiException(503,"SEARCH_PROVIDER_NOT_CONFIGURED","Chức năng đang chờ tích hợp dịch vụ xử lý. Bạn có thể tìm bằng văn bản."); }
-    SearchResponse voice(MultipartFile file,SearchService.SearchOwner owner) throws IOException {
+    SearchResponse voice(MultipartFile file,double durationSeconds,SearchService.SearchOwner owner) throws IOException {
         if(speech.isEmpty()) throw unavailable();
+        if(!Double.isFinite(durationSeconds) || durationSeconds<1 || durationSeconds>30) throw new ApiException(422,"INVALID_AUDIO_DURATION","Bản ghi âm phải dài từ 1 đến 30 giây.");
         byte[] bytes=checked(file); String type=audioType(bytes);
         String name=media.save(bytes);
         Conditions conditions=new Conditions(null,List.of(),List.of(),null,null,Sort.RELEVANCE);
         Long id=transactions.execute(status->{ long next=searches.create("VOICE","PROCESSING",conditions,owner); jdbc.update("INSERT INTO voice_queries(id,audio_url) VALUES (?,?)",next,name); return next; });
         Transcript transcript;
-        try { transcript=retry(()->speech.getFirst().transcribe(new AudioInput(bytes,type)),"voice"); }
-        catch(ProviderUnavailableException error) { jdbc.update("UPDATE search_queries SET status='FAILED' WHERE id=?",id); throw new ApiException(503,"SEARCH_PROVIDER_FAILED",error.getMessage()); }
-        if(transcript==null || transcript.text()==null || transcript.text().isBlank() || transcript.text().length()>100 || !Double.isFinite(transcript.durationSeconds()) || transcript.durationSeconds()<1 || transcript.durationSeconds()>30) { jdbc.update("UPDATE search_queries SET status='FAILED' WHERE id=?",id); throw new ApiException(422,"INVALID_TRANSCRIPT","Âm thanh phải dài 1–30 giây và có nội dung phiên âm tối đa 100 ký tự."); }
+        try {
+            transcript=retry(()->speech.getFirst().transcribe(new AudioInput(bytes,type,durationSeconds)),"voice");
+            if(transcript==null || transcript.text()==null || transcript.text().isBlank() || transcript.text().length()>100 || !Double.isFinite(transcript.durationSeconds()) || transcript.durationSeconds()<1 || transcript.durationSeconds()>30)
+                throw new ApiException(422,"INVALID_TRANSCRIPT","Âm thanh phải dài 1–30 giây và có nội dung phiên âm tối đa 100 ký tự.");
+        } catch(ProviderUnavailableException error) {
+            fail(id); throw new ApiException(503,"SEARCH_PROVIDER_FAILED",error.getMessage());
+        } catch(ApiException error) {
+            fail(id); throw error;
+        } catch(RuntimeException error) {
+            fail(id); throw error;
+        }
         transactions.executeWithoutResult(status->{ jdbc.update("UPDATE voice_queries SET transcribed_text=? WHERE id=?",transcript.text(),id); jdbc.update("UPDATE search_queries SET status='AWAITING_CONFIRMATION' WHERE id=?",id); });
         return searches.response(id,owner,0,24);
     }
@@ -57,15 +66,21 @@ public class MediaSearchService {
     }
     public record ImageOptions(@jakarta.validation.constraints.NotNull @Valid Conditions conditions,@Valid Region region) { }
     SearchResponse runImage(long id,ImageInput input,SearchService.SearchOwner owner) {
-        ImageMatches matches;
-        try { matches=retry(()->image.getFirst().search(input),"image"); }
-        catch(ProviderUnavailableException error) { jdbc.update("UPDATE search_queries SET status='FAILED' WHERE id=?",id); throw new ApiException(503,"SEARCH_PROVIDER_FAILED",error.getMessage()); }
-        if(matches==null || matches.items().stream().anyMatch(m->m.score()==null) || matches.items().stream().map(ImageMatch::productId).distinct().count()!=matches.items().size()) throw new IllegalStateException("Image adapter must return unique product IDs and finite decimal scores");
-        var eligible=catalog.candidates(input.conditions(),null).stream().map(Candidate::id).collect(java.util.stream.Collectors.toSet());
-        List<ImageMatch> filtered=matches.items().stream().filter(m->eligible.contains(m.productId())).toList();
-        List<ImageMatch> sorted=switch(input.conditions().sort()==null?Sort.RELEVANCE:input.conditions().sort()) { case RELEVANCE -> filtered; default -> catalog.candidates(input.conditions(),null).stream().flatMap(c->filtered.stream().filter(m->m.productId()==c.id())).toList(); };
-        transactions.executeWithoutResult(status->{ for(int n=0;n<sorted.size();n++) { var match=sorted.get(n); jdbc.update("INSERT INTO search_results(query_id,product_id,rank,score) VALUES (?,?,?,?)",id,match.productId(),n+1,match.score()); } jdbc.update("UPDATE search_queries SET status='COMPLETED' WHERE id=?",id); });
-        return searches.response(id,owner,0,24);
+        try {
+            ImageMatches matches=retry(()->image.getFirst().search(input),"image");
+            if(matches==null || matches.items().stream().anyMatch(m->m.score()==null) || matches.items().stream().map(ImageMatch::productId).distinct().count()!=matches.items().size()) throw new IllegalStateException("Image adapter must return unique product IDs and finite decimal scores");
+            var eligible=catalog.candidates(input.conditions(),null).stream().map(Candidate::id).collect(java.util.stream.Collectors.toSet());
+            List<ImageMatch> filtered=matches.items().stream().filter(m->eligible.contains(m.productId())).toList();
+            List<ImageMatch> sorted=switch(input.conditions().sort()==null?Sort.RELEVANCE:input.conditions().sort()) { case RELEVANCE -> filtered; default -> catalog.candidates(input.conditions(),null).stream().flatMap(c->filtered.stream().filter(m->m.productId()==c.id())).toList(); };
+            transactions.executeWithoutResult(status->{ for(int n=0;n<sorted.size();n++) { var match=sorted.get(n); jdbc.update("INSERT INTO search_results(query_id,product_id,rank,score) VALUES (?,?,?,?)",id,match.productId(),n+1,match.score()); } jdbc.update("UPDATE search_queries SET status='COMPLETED' WHERE id=?",id); });
+            return searches.response(id,owner,0,24);
+        } catch(ProviderUnavailableException error) {
+            fail(id); throw new ApiException(503,"SEARCH_PROVIDER_FAILED",error.getMessage());
+        } catch(ApiException error) {
+            fail(id); throw error;
+        } catch(RuntimeException error) {
+            fail(id); throw error;
+        }
     }
     SearchResponse refine(long id,RefineSearch body,SearchService.SearchOwner owner) throws IOException {
         if(image.isEmpty()) throw unavailable(); var original=searches.owned(id,owner); if(!original.type().equals("IMAGE")) throw ApiException.missing();
@@ -81,8 +96,7 @@ public class MediaSearchService {
     private static String imageType(byte[] bytes) {
         if(bytes.length>12 && (bytes[0]&255)==255 && (bytes[1]&255)==216 && (bytes[2]&255)==255) return "image/jpeg";
         if(bytes.length>24 && bytes[0]==(byte)137 && bytes[1]==80 && bytes[2]==78 && bytes[3]==71) return "image/png";
-        if(bytes.length>12 && new String(bytes,0,4,java.nio.charset.StandardCharsets.US_ASCII).equals("RIFF") && new String(bytes,8,4,java.nio.charset.StandardCharsets.US_ASCII).equals("WEBP")) return "image/webp";
-        throw new ApiException(400,"INVALID_IMAGE","File phải có nội dung JPEG, PNG hoặc WebP hợp lệ; adapter phải giải mã nội dung trước khi nhận dạng.");
+        throw new ApiException(400,"INVALID_IMAGE","File phải có nội dung JPEG hoặc PNG hợp lệ; adapter phải giải mã nội dung trước khi nhận dạng.");
     }
     private static String audioType(byte[] bytes) {
         if(bytes.length>12 && new String(bytes,0,4,java.nio.charset.StandardCharsets.US_ASCII).equals("RIFF") && new String(bytes,8,4,java.nio.charset.StandardCharsets.US_ASCII).equals("WAVE")) return "audio/wav";
@@ -94,4 +108,5 @@ public class MediaSearchService {
         for(int attempt=1;attempt<=3;attempt++) { try { return operation.get(); } catch(ProviderUnavailableException error) { LOG.atWarn().addKeyValue("provider",provider).addKeyValue("attempt",attempt).setCause(error).log("search_provider_failed"); if(attempt==3) throw error; } }
         throw new IllegalStateException("Retry loop exited unexpectedly");
     }
+    private void fail(long id) { jdbc.update("UPDATE search_queries SET status='FAILED' WHERE id=?",id); }
 }
