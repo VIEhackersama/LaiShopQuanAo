@@ -4,9 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -14,6 +21,8 @@ import java.util.List;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,14 +33,11 @@ import vn.laishop.common.ApiException;
 import static vn.laishop.search.SearchTypes.*;
 
 /**
- * Small, dependency-free image matcher for local demonstrations.
- *
- * <p>It compares the mean RGB colour of the selected image region with the
- * three-number colour embedding stored for each product. It is deliberately
- * opt-in and is not a replacement for a production visual-search model.</p>
+ * Image matcher supporting both multimodal CLIP embeddings with pgvector
+ * and fallback local RGB matching.
  */
 @Component
-@ConditionalOnExpression("${LOCAL_IMAGE_SEARCH_ENABLED:false}")
+@ConditionalOnExpression("${LOCAL_IMAGE_SEARCH_ENABLED:false} || ${CLIP_SEARCH_ENABLED:true}")
 public class LocalImageSimilarityAdapter implements ImageSimilarityPort {
     private static final Logger LOG = LoggerFactory.getLogger(LocalImageSimilarityAdapter.class);
     static final long DEFAULT_MAX_PIXELS = 16_000_000;
@@ -39,11 +45,17 @@ public class LocalImageSimilarityAdapter implements ImageSimilarityPort {
     private final JdbcTemplate jdbc;
     private final double minimumScore;
     private final long maximumPixels;
+    private final boolean clipEnabled;
+    private final String clipServiceUrl;
+    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
 
     public LocalImageSimilarityAdapter(
             JdbcTemplate jdbc,
             @Value("${LOCAL_IMAGE_SEARCH_MIN_SCORE:0.35}") double minimumScore,
-            @Value("${LOCAL_IMAGE_SEARCH_MAX_PIXELS:16000000}") long maximumPixels) {
+            @Value("${LOCAL_IMAGE_SEARCH_MAX_PIXELS:16000000}") long maximumPixels,
+            @Value("${CLIP_SEARCH_ENABLED:true}") boolean clipEnabled,
+            @Value("${CLIP_SERVICE_URL:http://host.docker.internal:8001}") String clipServiceUrl) {
         if (!Double.isFinite(minimumScore) || minimumScore < 0 || minimumScore > 1) {
             throw new IllegalArgumentException("LOCAL_IMAGE_SEARCH_MIN_SCORE must be between 0 and 1");
         }
@@ -53,10 +65,101 @@ public class LocalImageSimilarityAdapter implements ImageSimilarityPort {
         this.jdbc = jdbc;
         this.minimumScore = minimumScore;
         this.maximumPixels = maximumPixels;
+        this.clipEnabled = clipEnabled;
+        this.clipServiceUrl = clipServiceUrl;
+        this.httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(3))
+                .build();
+        this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public ImageMatches search(ImageInput input) {
+        if (clipEnabled) {
+            try {
+                ImageMatches clipMatches = searchWithClip(input);
+                if (clipMatches != null && !clipMatches.items().isEmpty()) {
+                    return clipMatches;
+                }
+            } catch (Exception ex) {
+                LOG.warn("CLIP search failed or service unavailable, falling back to RGB matching: {}", ex.getMessage());
+            }
+        }
+        return searchWithRgb(input);
+    }
+
+    private ImageMatches searchWithClip(ImageInput input) throws IOException, InterruptedException {
+        String boundary = "----WebKitFormBoundary" + System.currentTimeMillis();
+        byte[] body = buildMultipartBody(boundary, input);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(clipServiceUrl + "/embed"))
+                .timeout(Duration.ofSeconds(10))
+                .header("Content-Type", "multipart/form-data; boundary=" + boundary)
+                .POST(HttpRequest.BodyPublishers.ofByteArray(body))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("CLIP service HTTP " + response.statusCode() + ": " + response.body());
+        }
+
+        JsonNode root = objectMapper.readTree(response.body());
+        JsonNode embedNode = root.get("embedding");
+        if (embedNode == null || !embedNode.isArray() || embedNode.isEmpty()) {
+            throw new RuntimeException("Invalid embedding in CLIP response: " + response.body());
+        }
+
+        StringBuilder vectorSb = new StringBuilder("[");
+        for (int i = 0; i < embedNode.size(); i++) {
+            if (i > 0) vectorSb.append(",");
+            vectorSb.append(embedNode.get(i).asDouble());
+        }
+        vectorSb.append("]");
+        String vectorStr = vectorSb.toString();
+
+        List<ImageMatch> matches = jdbc.query(
+                "SELECT id, (1 - (clip_embedding <=> ?::vector)) AS score "
+                        + "FROM products "
+                        + "WHERE active = true AND clip_embedding IS NOT NULL "
+                        + "ORDER BY clip_embedding <=> ?::vector "
+                        + "LIMIT 24",
+                (rs, rowNum) -> new ImageMatch(
+                        rs.getLong("id"),
+                        BigDecimal.valueOf(Math.max(0.0, Math.min(1.0, rs.getDouble("score"))))
+                                .setScale(6, RoundingMode.HALF_UP)
+                ),
+                vectorStr, vectorStr
+        );
+        return new ImageMatches(matches);
+    }
+
+    private byte[] buildMultipartBody(String boundary, ImageInput input) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(("--" + boundary + "\r\n").getBytes(StandardCharsets.UTF_8));
+        out.write(("Content-Disposition: form-data; name=\"file\"; filename=\"query.jpg\"\r\n").getBytes(StandardCharsets.UTF_8));
+        out.write(("Content-Type: " + (input.contentType() != null ? input.contentType() : "image/jpeg") + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+        out.write(input.bytes());
+        out.write("\r\n".getBytes(StandardCharsets.UTF_8));
+
+        if (input.region() != null) {
+            addFormField(out, boundary, "x", String.valueOf(input.region().x()));
+            addFormField(out, boundary, "y", String.valueOf(input.region().y()));
+            addFormField(out, boundary, "width", String.valueOf(input.region().width()));
+            addFormField(out, boundary, "height", String.valueOf(input.region().height()));
+        }
+
+        out.write(("--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
+        return out.toByteArray();
+    }
+
+    private void addFormField(ByteArrayOutputStream out, String boundary, String name, String value) throws IOException {
+        out.write(("--" + boundary + "\r\n").getBytes(StandardCharsets.UTF_8));
+        out.write(("Content-Disposition: form-data; name=\"" + name + "\"\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+        out.write((value + "\r\n").getBytes(StandardCharsets.UTF_8));
+    }
+
+    private ImageMatches searchWithRgb(ImageInput input) {
         double[] query = describe(input.bytes(), input.region(), maximumPixels);
         List<Candidate> candidates = jdbc.query(
                 "SELECT id,embedding::text FROM products WHERE active=true AND embedding IS NOT NULL "
