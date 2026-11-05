@@ -19,7 +19,7 @@ services:
       DATABASE_URL: jdbc:postgresql://postgres:5432/laishop
       DATABASE_USER: laishop
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      COOKIE_SECURE: "true"
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
       MEDIA_ROOT: /app/media
       OPENAI_VOICE_ENABLED: ${OPENAI_VOICE_ENABLED:-false}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
@@ -40,6 +40,8 @@ services:
       AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-60}
     volumes:
       - media_data:/app/media
+    ports:
+      - "8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
