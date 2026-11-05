@@ -28,6 +28,16 @@ server:
         same-site: lax
 app:
   media-root: ${MEDIA_ROOT:./media}
+  search:
+    openai:
+      voice:
+        enabled: ${OPENAI_VOICE_ENABLED:false}
+        api-key: ${OPENAI_API_KEY:}
+        model: ${OPENAI_TRANSCRIBE_MODEL:gpt-transcribe}
+        language: ${OPENAI_TRANSCRIBE_LANGUAGE:vi}
+        base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+        connect-timeout-seconds: ${OPENAI_CONNECT_TIMEOUT_SECONDS:5}
+        request-timeout-seconds: ${OPENAI_REQUEST_TIMEOUT_SECONDS:30}
   bank:
     name: ${BANK_NAME:}
     account: ${BANK_ACCOUNT:}

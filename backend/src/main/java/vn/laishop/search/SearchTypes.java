@@ -14,7 +14,7 @@ public final class SearchTypes {
     public record SearchResponse(long queryId,String type,String status,String text,Conditions conditions,ProductPage products) { }
     public record Capabilities(boolean voice,boolean image) { }
     public record Region(@DecimalMin("0") @DecimalMax("1") double x,@DecimalMin("0") @DecimalMax("1") double y,@DecimalMin(value="0",inclusive=false) @DecimalMax("1") double width,@DecimalMin(value="0",inclusive=false) @DecimalMax("1") double height) { }
-    public record AudioInput(byte[] bytes,String contentType) { public AudioInput { bytes=bytes.clone(); } @Override public byte[] bytes() { return bytes.clone(); } }
+    public record AudioInput(byte[] bytes,String contentType,double durationSeconds) { public AudioInput { bytes=bytes.clone(); } @Override public byte[] bytes() { return bytes.clone(); } }
     public record Transcript(String text,double durationSeconds) { }
     public record ImageInput(byte[] bytes,String contentType,Region region,Conditions conditions) { public ImageInput { bytes=bytes.clone(); } @Override public byte[] bytes() { return bytes.clone(); } }
     public record ImageMatch(long productId,BigDecimal score) { }

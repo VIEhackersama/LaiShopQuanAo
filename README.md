@@ -55,6 +55,16 @@ Port nhận dữ liệu media đã kiểm tra kích thước/chữ ký file; ada
 
 Adapter phải cấu hình connect/read timeout hữu hạn; ném `ProviderUnavailableException` cho lỗi tạm thời để backend retry tối đa hai lần, ghi cảnh báo và trả lỗi. Lỗi input dùng `ApiException` 400/422, không retry. Không gọi provider trong database transaction. Không triển khai model, API trả phí, pgvector hoặc embedding giả trong bản nền này.
 
+### Voice Search bằng Speech-to-Text thật
+
+Backend tích hợp OpenAI Audio Transcriptions qua `OpenAiSpeechRecognitionAdapter`. Bản ghi WebM/MP4/WAV được gửi từ server tới `/v1/audio/transcriptions`; transcript thực được lưu vào đúng `VoiceQuery`, hiển thị cho khách xác nhận/chỉnh sửa, rồi dùng chính query đó để tạo `SearchResult`. Không có transcript cố định hoặc API key trong mã nguồn.
+
+Đặt `OPENAI_VOICE_ENABLED=true` và `OPENAI_API_KEY` trong `.env` để bật. Mặc định dùng model `gpt-transcribe`, ngôn ngữ `vi`; có thể đổi bằng `OPENAI_TRANSCRIBE_MODEL` và `OPENAI_TRANSCRIBE_LANGUAGE`. Giữ `OPENAI_VOICE_ENABLED=false` khi chưa có key để capability Voice tự tắt. API lỗi tạm thời được retry; audio không nhận dạng được trả 422 và query chuyển `FAILED`.
+
+### Chế độ Image Search cục bộ
+
+Đặt `LOCAL_IMAGE_SEARCH_ENABLED=true` trong `.env` để bật adapter demo không dùng API trả phí. Adapter giải mã JPEG/PNG thật, áp dụng vùng crop và xếp hạng sản phẩm theo khoảng cách vector màu RGB trong `products.embedding`. `LOCAL_IMAGE_SEARCH_MIN_SCORE` điều chỉnh ngưỡng (mặc định `0.35`); `LOCAL_IMAGE_SEARCH_MAX_PIXELS` giới hạn số pixel sau giải mã (tối đa 16 triệu). Đây là so khớp màu nhẹ phục vụ demo local, không phải model thị giác production.
+
 Media lưu volume riêng, không phục vụ như file public. `/api/v1/search/queries/{id}/media` kiểm tra quyền sở hữu. Query/media không còn tham chiếu được dọn sau 7 ngày. Query của khách vãng lai gắn session tìm kiếm; không tự tạo Customer giả.
 
 ## Kiểm thử

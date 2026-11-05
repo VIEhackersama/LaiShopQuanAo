@@ -16,7 +16,7 @@ public class MediaSearchController {
     public MediaSearchController(MediaSearchService media) { this.media=media; }
     @GetMapping("/capabilities") Capabilities capabilities() { return media.capabilities(); }
     @PostMapping(value="/voice",consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
-    SearchResponse voice(@RequestPart("file") MultipartFile file,Principal p,HttpServletRequest request) throws IOException { return media.voice(file,SearchController.owner(p,request)); }
+    SearchResponse voice(@RequestPart("file") MultipartFile file,@RequestPart("durationSeconds") double durationSeconds,Principal p,HttpServletRequest request) throws IOException { return media.voice(file,durationSeconds,SearchController.owner(p,request)); }
     @PostMapping(value="/image",consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
     SearchResponse image(@RequestPart("file") MultipartFile file,@Valid @RequestPart("options") MediaSearchService.ImageOptions options,Principal p,HttpServletRequest request) throws IOException { return media.image(file,options,SearchController.owner(p,request)); }
     @GetMapping("/queries/{id}/media") ResponseEntity<byte[]> read(@PathVariable long id,Principal p,HttpServletRequest request) throws IOException { return media.read(id,SearchController.owner(p,request)); }

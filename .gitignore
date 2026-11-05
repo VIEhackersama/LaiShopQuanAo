@@ -3,6 +3,7 @@ frontend/dist/
 frontend/test-results/
 frontend/playwright-report/
 backend/target/
+backend/.m2/
 .runtime/
 .env
 *.log
