@@ -48,9 +48,16 @@ public class SearchService {
     @Transactional public SearchResponse executeVoice(long id,VoiceExecute request,SearchOwner owner) {
         StoredQuery original=owned(id,owner); if(!original.type().equals("VOICE")) throw ApiException.missing();
         String text=request.text().strip(); if(text.isEmpty()) throw new ApiException(400,"EMPTY_KEYWORD","Phiên âm không được rỗng.");
-        long next=create("VOICE","COMPLETED",request.conditions(),owner);
-        jdbc.update("INSERT INTO voice_queries(id,audio_url,transcribed_text) VALUES (?,?,?)",next,original.media(),text);
-        saveCandidates(next,catalog.candidates(request.conditions(),text)); return response(next,owner,request.page(),request.pageSize());
+        if(original.status().equals("COMPLETED")) {
+            if(text.equals(original.text())) return response(id,owner,request.page(),request.pageSize());
+            throw ApiException.conflict("VOICE_QUERY_COMPLETED","Truy vấn giọng nói này đã được thực hiện.");
+        }
+        if(!original.status().equals("AWAITING_CONFIRMATION")) throw ApiException.conflict("TRANSCRIPT_NOT_READY","Bản phiên âm chưa sẵn sàng để tìm kiếm.");
+        jdbc.update("UPDATE voice_queries SET transcribed_text=? WHERE id=?",text,id);
+        jdbc.update("UPDATE search_queries SET search_conditions=?::jsonb WHERE id=?",encode(request.conditions()),id);
+        saveCandidates(id,catalog.candidates(request.conditions(),text));
+        jdbc.update("UPDATE search_queries SET status='COMPLETED' WHERE id=?",id);
+        return response(id,owner,request.page(),request.pageSize());
     }
     public String encode(Object value) { try { return json.writeValueAsString(value); } catch(JsonProcessingException error) { throw new IllegalStateException("Cannot serialize search data",error); } }
     public <T> T decode(String value,Class<T> type) { try { return json.readValue(value,type); } catch(JsonProcessingException error) { throw new IllegalStateException("Invalid stored search data",error); } }
