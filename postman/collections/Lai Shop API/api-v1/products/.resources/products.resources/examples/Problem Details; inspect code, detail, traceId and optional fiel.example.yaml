@@ -1,0 +1,34 @@
+$kind: http-example
+name: Problem Details; inspect code, detail, traceId and optional fieldErrors.
+request:
+  url: "{{baseUrl}}/api/v1/products?categoryId=7212&sizes=stri,string,strin,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string,string&colors=string,stri,string,string,string,string,string,string,string,s,string,string,string,string,string,s,string,string,string,string&minPrice=3858.9605456218123&maxPrice=6764.536374248564&sort=NEWEST&page=4887&pageSize=4887"
+  method: GET
+  headers:
+    Accept: application/problem+json
+  queryParams:
+    categoryId: "7212"
+    sizes: stri,string,strin,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string,string
+    colors: string,stri,string,string,string,string,string,string,string,s,string,string,string,string,string,s,string,string,string,string
+    minPrice: "3858.9605456218123"
+    maxPrice: "6764.536374248564"
+    sort: NEWEST
+    page: "4887"
+    pageSize: "4887"
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 400
+  statusText: Bad Request
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "string",
+        "detail": "string",
+        "status": 8553,
+        "traceId": "string"
+      }
+order: 2000

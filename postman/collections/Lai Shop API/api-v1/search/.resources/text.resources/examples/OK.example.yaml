@@ -9,28 +9,28 @@ request:
     content: |-
       {
         "conditions": {
-          "categoryId": 504,
+          "categoryId": 4689,
           "sizes": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
             "stri",
             "string",
             "string",
-            "string",
-            "string",
-            "string",
-            "string",
-            "strin",
             "string",
             "st",
             "string",
             "string",
-            "stri",
             "string",
-            "strin",
-            "str",
             "string",
             "string",
             "string",
-            "stri"
+            "strin",
+            "string",
+            "s",
+            "string"
           ],
           "colors": [
             "string",
@@ -39,6 +39,7 @@ request:
             "string",
             "string",
             "string",
+            "stri",
             "string",
             "string",
             "string",
@@ -47,20 +48,19 @@ request:
             "string",
             "string",
             "string",
+            "st",
             "string",
-            "string",
-            "string",
-            "string",
-            "string",
+            "st",
+            "stri",
             "string"
           ],
-          "minPrice": 6406.272354070097,
-          "maxPrice": 6998.307569883764,
-          "sort": "NEWEST"
+          "minPrice": 7958.857091143727,
+          "maxPrice": 2753.6874660290778,
+          "sort": "NAME_ASC"
         },
         "text": "string",
-        "page": 209,
-        "pageSize": 72
+        "page": 1550,
+        "pageSize": 32
       }
 response:
   statusCode: 200
@@ -71,33 +71,33 @@ response:
     type: json
     content: |-
       {
-        "queryId": 3415,
+        "queryId": 6232,
         "type": "string",
         "status": "string",
         "text": "string",
         "conditions": {
-          "categoryId": 2343,
+          "categoryId": 1096,
           "sizes": [
+            "string",
             "strin",
+            "string",
+            "s",
             "string",
             "string",
             "st",
+            "string",
+            "str",
+            "str",
+            "strin",
             "s",
             "string",
             "string",
             "string",
             "string",
-            "stri",
             "string",
-            "",
+            "strin",
             "string",
-            "string",
-            "string",
-            "string",
-            "string",
-            "s",
-            "string",
-            "string"
+            "strin"
           ],
           "colors": [
             "string",
@@ -116,19 +116,19 @@ response:
             "string",
             "string",
             "string",
-            "str",
+            "string",
             "string",
             "string",
             "string"
           ],
-          "minPrice": 2415.144252590835,
-          "maxPrice": 4405.859913676977,
-          "sort": "PRICE_DESC"
+          "minPrice": 1043.1018797680736,
+          "maxPrice": 455.3615883924067,
+          "sort": "RELEVANCE"
         },
         "products": {
           "items": [
             {
-              "id": 9452,
+              "id": 1647,
               "name": "string",
               "description": "string",
               "imageUrl": "string",
@@ -138,10 +138,10 @@ response:
                 "string",
                 "string"
               ],
-              "inStock": false
+              "inStock": true
             },
             {
-              "id": 33,
+              "id": 8864,
               "name": "string",
               "description": "string",
               "imageUrl": "string",
@@ -151,12 +151,12 @@ response:
                 "string",
                 "string"
               ],
-              "inStock": false
+              "inStock": true
             }
           ],
-          "page": 4955,
-          "pageSize": 555,
-          "total": 5073
+          "page": 907,
+          "pageSize": 1446,
+          "total": 3581
         }
       }
 order: 1000

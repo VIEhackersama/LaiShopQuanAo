@@ -1,0 +1,31 @@
+{
+  "oneOf": [
+    {
+      "type":"object","additionalProperties":false,"required":["tool","arguments"],
+      "properties": {
+        "tool":{"type":"string","const":"search_products"},
+        "arguments": {
+          "type":"object","additionalProperties":false,
+          "required":["terms","categoryId","sizes","colors","minPrice","maxPrice","sort","inStockOnly"],
+          "properties": {
+            "terms":{"type":"array","maxItems":6,"items":{"type":"string"}},
+            "categoryId":{"type":["integer","null"]},
+            "sizes":{"type":"array","items":{"type":"string"}},
+            "colors":{"type":"array","items":{"type":"string"}},
+            "minPrice":{"type":["number","null"],"minimum":0},
+            "maxPrice":{"type":["number","null"],"minimum":0},
+            "sort":{"type":"string","enum":["RELEVANCE","PRICE_ASC","PRICE_DESC","NEWEST","NAME_ASC"]},
+            "inStockOnly":{"type":"boolean"}
+          }
+        }
+      }
+    },
+    {
+      "type":"object","additionalProperties":false,"required":["tool","arguments"],
+      "properties": {
+        "tool":{"type":"string","const":"ask_clarification"},
+        "arguments":{"type":"object","additionalProperties":false,"required":["question"],"properties":{"question":{"type":"string","maxLength":500}}}
+      }
+    }
+  ]
+}

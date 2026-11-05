@@ -1,39 +1,39 @@
 $kind: http-request
 description: ""
-url: '{{baseUrl}}/api/v1/products?categoryId=6305&sizes=["string","string","st","string","string","string","strin","string","string","string","string","string","string","string","string","string","s","string","string","string"]&colors=["string","string","string","string","string","string","string","string","str","string","string","string","string","string","string","string","string","string","string","string"]&minPrice=9367.283696774393&maxPrice=9214.218617416918&sort=PRICE_ASC&page=7406&pageSize=7406'
+url: '{{baseUrl}}/api/v1/products?categoryId=7212&sizes=["stri","string","strin","string","string","string","string","str","string","string","string","string","string","string","string","string","string","string","string","string"]&colors=["string","stri","string","string","string","string","string","string","string","s","string","string","string","string","string","s","string","string","string","string"]&minPrice=3858.9605456218123&maxPrice=6764.536374248564&sort=NEWEST&page=4887&pageSize=4887'
 method: GET
 headers:
   Accept: "*/*"
 queryParams:
   - key: categoryId
-    value: "6305"
+    value: "7212"
     disabled: false
     description: "(Required) "
   - key: sizes
-    value: '["string","string","st","string","string","string","strin","string","string","string","string","string","string","string","string","string","s","string","string","string"]'
+    value: '["stri","string","strin","string","string","string","string","str","string","string","string","string","string","string","string","string","string","string","string","string"]'
     disabled: false
     description: "(Required) "
   - key: colors
-    value: '["string","string","string","string","string","string","string","string","str","string","string","string","string","string","string","string","string","string","string","string"]'
+    value: '["string","stri","string","string","string","string","string","string","string","s","string","string","string","string","string","s","string","string","string","string"]'
     disabled: false
     description: "(Required) "
   - key: minPrice
-    value: "9367.283696774393"
+    value: "3858.9605456218123"
     disabled: false
     description: "(Required) "
   - key: maxPrice
-    value: "9214.218617416918"
+    value: "6764.536374248564"
     disabled: false
     description: "(Required) "
   - key: sort
-    value: PRICE_ASC
+    value: NEWEST
     disabled: false
     description: "(Required) "
   - key: page
-    value: "7406"
+    value: "4887"
     disabled: false
   - key: pageSize
-    value: "7406"
+    value: "4887"
     disabled: false
 settings: {}
 examples: ./.resources/products.resources/examples

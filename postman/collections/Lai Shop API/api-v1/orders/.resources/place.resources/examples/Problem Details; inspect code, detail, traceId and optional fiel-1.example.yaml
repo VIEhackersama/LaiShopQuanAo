@@ -1,0 +1,34 @@
+$kind: http-example
+name: Problem Details; inspect code, detail, traceId and optional fieldErrors.
+request:
+  url: "{{baseUrl}}/api/v1/orders"
+  method: POST
+  headers:
+    Idempotency-Key: string
+    Accept: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "expectedTotal": "209000.00",
+        "paymentMethod": "COD",
+        "receiverName": "string",
+        "receiverPhone": "0753250823",
+        "shippingAddress": "string",
+        "cartVersion": 4591
+      }
+response:
+  statusCode: 401
+  statusText: Unauthorized
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "string",
+        "detail": "string",
+        "status": 8553,
+        "traceId": "string"
+      }
+order: 3000

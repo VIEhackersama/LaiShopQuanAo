@@ -1,0 +1,18 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/ai/chat"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: "*/*"
+body:
+  type: json
+  content: |-
+    {
+      "message": "str",
+      "conversationId": "bc695b64-1ac2-5026-8a9e-da3f0af75ac9",
+      "expectedVersion": 1330
+    }
+settings: {}
+examples: ./.resources/chat.resources/examples
+order: 1000

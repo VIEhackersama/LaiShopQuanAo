@@ -1,0 +1,78 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/search/ai/conversations/:id"
+  method: GET
+  headers:
+    Accept: "*/*"
+  pathVariables:
+    - key: id
+      value: bfa566a4-8fff-a744-938c-fcb6123efdff
+      disabled: false
+      description: "(Required) "
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "id": "6925caf9-b95d-7dd8-b8dc-ea7db13ad52d",
+        "version": 4088,
+        "state": {
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "strin",
+            "string",
+            "string"
+          ],
+          "inStockOnly": false,
+          "sizes": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "st",
+            "string",
+            "str",
+            "stri",
+            "string"
+          ],
+          "sort": "PRICE_DESC",
+          "terms": [
+            "strin",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string"
+          ],
+          "categoryId": 840,
+          "minPrice": 9222.490754909813,
+          "maxPrice": 8551.94247327745
+        },
+        "messages": [
+          {
+            "role": "string",
+            "content": "string",
+            "queryId": 992
+          },
+          {
+            "role": "string",
+            "content": "string",
+            "queryId": 8100
+          }
+        ]
+      }
+order: 1000

@@ -35,7 +35,7 @@ npm ci
 npm run dev
 ```
 
-Mở `http://127.0.0.1:5173`. Vite proxy `/api` sang backend cổng 8080. Tự đăng ký tài khoản; không có tài khoản/mật khẩu demo cài sẵn. Seed gồm 6 sản phẩm, biến thể có giá riêng và ảnh stock Pexels làm mẫu. Nguồn 10 ảnh và giấy phép nằm trong `frontend/public/catalog/photos/sources.json`.
+Mở `http://127.0.0.1:5173`. Vite proxy `/api` sang backend cổng 8080. Tự đăng ký tài khoản; không có tài khoản/mật khẩu demo cài sẵn. Seed gồm 24 sản phẩm, biến thể có giá riêng và ảnh stock Pexels làm mẫu. Nguồn ảnh và giấy phép nằm trong `frontend/public/catalog/photos/`.
 
 ## Hợp đồng và dữ liệu
 
@@ -46,6 +46,29 @@ Mở `http://127.0.0.1:5173`. Vite proxy `/api` sang backend cổng 8080. Tự �
 - API có CSRF; gọi `/api/v1/auth/csrf`, gửi token bằng header được trả về cùng cookie session cho các mutation. Danh tính khách lấy từ session, không nhận customerId từ client.
 - Checkout cần `Idempotency-Key`. Cùng khóa/nội dung trả lại đơn đã tạo; khác nội dung trả 409. Payment PENDING không có nghĩa đã nhận tiền.
 - Ngừng bán thay vì xóa sản phẩm đã được tham chiếu. Không cung cấp API khách hàng để đổi trạng thái tiền, giao vận hay hủy đơn.
+
+## Chatbot tìm kiếm AI
+
+Tab **Trợ lý tìm kiếm AI** hỗ trợ hội thoại nhiều lượt: loại đồ, từ khóa, màu, size, khoảng giá và sort. Ollama/Qwen3 tạo yêu cầu công cụ theo JSON Schema; backend xác thực typed records và Bean Validation, rồi gọi DAO có tham số để đọc catalog. Không để model chạy SQL, tạo sản phẩm, sửa giỏ hoặc đặt hàng. Câu xác nhận số kết quả được tạo từ dữ liệu truy vấn thật; đây là chatbot lập điều kiện tìm kiếm, chưa phải vector search hoặc stylist sinh câu trả lời tự do.
+
+Chạy `ollama serve`, bảo đảm `ollama list` có `qwen3:8b` (nếu chưa có: `ollama pull qwen3:8b`). Trước khi chạy backend local, đặt:
+
+```powershell
+$env:AI_ENABLED='true'
+$env:AI_OLLAMA_URL='http://127.0.0.1:11434'
+$env:AI_MODEL='qwen3:8b'
+$env:AI_TIMEOUT_SECONDS='60'
+```
+
+Compose đọc các biến tương ứng trong `.env`; địa chỉ host Ollama dùng `host.docker.internal` trên Docker Desktop. Ollama phải cho phép kết nối từ container nếu dùng cách này; bản local native đã được kiểm thử, cấu hình Docker/Ollama cần xác minh trên máy triển khai. Không chuyển ngầm sang API bên ngoài khi Ollama lỗi. Tắt AI bằng `AI_ENABLED=false`; tìm kiếm thường vẫn dùng endpoint riêng.
+
+API: `GET /api/v1/search/ai/capabilities`, `POST /api/v1/search/ai/chat`, `GET /api/v1/search/ai/conversations/{id}`. POST nhận `message` (1–500 ký tự), `conversationId` và `expectedVersion` (cùng null ở lượt đầu). Server giữ lịch sử/điều kiện; phiên tìm kiếm hoặc Customer quyết định quyền truy cập. Xung đột phiên bản trả 409, provider không có trả 503, JSON model sai trả 502. Không lưu lượt chat thành công khi model lỗi. Context gồm tối đa 12 tin gần nhất; hội thoại dọn sau 7 ngày. Chat UI giữ hội thoại trong lần mở panel hiện tại; tải lại trang có thể bắt đầu hội thoại mới. Giới hạn 12 lượt chat/phút/IP trên một backend.
+
+Thử “Tìm áo màu đen size M dưới 300 nghìn”, sau đó “Giữ loại áo, màu và size, chỉ lấy dưới 200 nghìn và xếp giá rẻ trước”. Bộ lọc được hiển thị để khách kiểm tra AI hiểu đúng. Khách có thể sửa yêu cầu hoặc dùng bộ lọc thường khi AI hiểu sai; backend không tự nới lỏng điều kiện.
+
+Catalog mẫu có 24 sản phẩm và 28 ảnh stock local. Nguồn/tác giả/giấy phép lưu trong `frontend/public/catalog/photos/sources.json` và `expanded-sources.json`. Ảnh minh họa phong cách, chưa phải ảnh inventory thực của shop. Size, màu, chất liệu và giá là dữ liệu demo khai báo, không suy ra tự động từ ảnh.
+
+Chạy test AI thật bằng `$env:RUN_AI_TESTS='true'` trước `mvnw test`; cần Ollama hoạt động và database riêng `_test`. Không dùng mock AI. Các bài AI kiểm tra nhiều lượt, lọc biến thể thực, quyền sở hữu, xung đột phiên bản, kết quả rỗng và câu hỏi làm rõ. Playwright AI cũng gọi model thật; backend demo cần bật AI.
 
 ## Voice / Image — điểm bàn giao
 

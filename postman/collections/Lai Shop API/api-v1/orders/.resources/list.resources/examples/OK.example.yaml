@@ -1,12 +1,12 @@
 $kind: http-example
 request:
-  url: "{{baseUrl}}/api/v1/orders?page=7406&pageSize=7406"
+  url: "{{baseUrl}}/api/v1/orders?page=4887&pageSize=4887"
   method: GET
   headers:
     Accept: "*/*"
   queryParams:
-    page: "7406"
-    pageSize: "7406"
+    page: "4887"
+    pageSize: "4887"
   body:
     type: text
     content: ""
@@ -21,10 +21,10 @@ response:
       {
         "items": [
           {
-            "id": 1354,
+            "id": 5731,
             "orderNumber": "string",
             "status": "string",
-            "createdAt": "2005-02-21T12:13:44.568Z",
+            "createdAt": "2015-05-20T23:17:09.711Z",
             "receiverName": "string",
             "receiverPhone": "string",
             "shippingAddress": "string",
@@ -38,7 +38,7 @@ response:
                 "size": "string",
                 "color": "string",
                 "unitPrice": "string",
-                "quantity": 334,
+                "quantity": 4329,
                 "lineTotal": "string"
               },
               {
@@ -47,7 +47,7 @@ response:
                 "size": "string",
                 "color": "string",
                 "unitPrice": "string",
-                "quantity": 1447,
+                "quantity": 9192,
                 "lineTotal": "string"
               }
             ],
@@ -59,15 +59,15 @@ response:
             "transferContent": "string"
           },
           {
-            "id": 5195,
+            "id": 4459,
             "orderNumber": "string",
             "status": "string",
-            "createdAt": "1951-07-17T20:39:57.411Z",
+            "createdAt": "1971-12-22T16:37:44.848Z",
             "receiverName": "string",
             "receiverPhone": "string",
             "shippingAddress": "string",
             "totalAmount": "string",
-            "paymentMethod": "COD",
+            "paymentMethod": "BANK_TRANSFER",
             "paymentStatus": "string",
             "items": [
               {
@@ -76,7 +76,7 @@ response:
                 "size": "string",
                 "color": "string",
                 "unitPrice": "string",
-                "quantity": 8402,
+                "quantity": 7080,
                 "lineTotal": "string"
               },
               {
@@ -85,7 +85,7 @@ response:
                 "size": "string",
                 "color": "string",
                 "unitPrice": "string",
-                "quantity": 327,
+                "quantity": 5179,
                 "lineTotal": "string"
               }
             ],
@@ -97,8 +97,8 @@ response:
             "transferContent": "string"
           }
         ],
-        "page": 1450,
-        "pageSize": 7514,
-        "total": 2769
+        "page": 7089,
+        "pageSize": 4791,
+        "total": 744
       }
 order: 1000

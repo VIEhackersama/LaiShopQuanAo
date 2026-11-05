@@ -10,28 +10,28 @@ body:
   content: |-
     {
       "conditions": {
-        "categoryId": 504,
+        "categoryId": 4689,
         "sizes": [
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
           "stri",
           "string",
           "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "strin",
           "string",
           "st",
           "string",
           "string",
-          "stri",
           "string",
-          "strin",
-          "str",
           "string",
           "string",
           "string",
-          "stri"
+          "strin",
+          "string",
+          "s",
+          "string"
         ],
         "colors": [
           "string",
@@ -40,6 +40,7 @@ body:
           "string",
           "string",
           "string",
+          "stri",
           "string",
           "string",
           "string",
@@ -48,20 +49,19 @@ body:
           "string",
           "string",
           "string",
+          "st",
           "string",
-          "string",
-          "string",
-          "string",
-          "string",
+          "st",
+          "stri",
           "string"
         ],
-        "minPrice": 6406.272354070097,
-        "maxPrice": 6998.307569883764,
-        "sort": "NEWEST"
+        "minPrice": 7958.857091143727,
+        "maxPrice": 2753.6874660290778,
+        "sort": "NAME_ASC"
       },
       "text": "string",
-      "page": 209,
-      "pageSize": 72
+      "page": 1550,
+      "pageSize": 32
     }
 settings: {}
 examples: ./.resources/text.resources/examples

@@ -1,0 +1,84 @@
+$kind: http-example
+name: Problem Details; inspect code, detail, traceId and optional fieldErrors.
+request:
+  url: "{{baseUrl}}/api/v1/search/queries/:id/refine"
+  method: POST
+  headers:
+    Accept: application/problem+json
+  pathVariables:
+    - key: id
+      value: "1464"
+      disabled: false
+      description: "(Required) "
+  body:
+    type: json
+    content: |-
+      {
+        "conditions": {
+          "categoryId": 527,
+          "sizes": [
+            "st",
+            "string",
+            "string",
+            "strin",
+            "stri",
+            "string",
+            "string",
+            "string",
+            "string",
+            "st",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "st",
+            "string",
+            "string",
+            "string",
+            "string"
+          ],
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "str",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "stri",
+            "string",
+            "string",
+            "string",
+            "string",
+            "strin",
+            "string"
+          ],
+          "minPrice": 6989.310975186527,
+          "maxPrice": 7408.20249542594,
+          "sort": "PRICE_ASC"
+        },
+        "page": 9157,
+        "pageSize": 25
+      }
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "string",
+        "detail": "string",
+        "status": 8553,
+        "traceId": "string"
+      }
+order: 10000

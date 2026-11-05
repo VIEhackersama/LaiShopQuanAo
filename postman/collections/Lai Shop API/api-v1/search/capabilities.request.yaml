@@ -6,4 +6,4 @@ headers:
   Accept: "*/*"
 settings: {}
 examples: ./.resources/capabilities.resources/examples
-order: 5000
+order: 6000

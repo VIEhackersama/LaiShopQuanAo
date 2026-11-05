@@ -7,7 +7,7 @@ headers:
   Accept: "*/*"
 pathVariables:
   - key: id
-    value: "4079"
+    value: "1464"
     disabled: false
     description: "(Required) "
 body:
@@ -15,24 +15,24 @@ body:
   content: |-
     {
       "conditions": {
-        "categoryId": 3467,
+        "categoryId": 527,
         "sizes": [
+          "st",
           "string",
+          "string",
+          "strin",
           "stri",
           "string",
-          "s",
           "string",
           "string",
-          "string",
-          "string",
-          "str",
           "string",
           "st",
           "string",
           "string",
-          "",
           "string",
           "string",
+          "string",
+          "st",
           "string",
           "string",
           "string",
@@ -40,32 +40,32 @@ body:
         ],
         "colors": [
           "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "str",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "stri",
+          "string",
+          "string",
+          "string",
+          "string",
           "strin",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
-          "string",
           "string"
         ],
-        "minPrice": 2149.9341912567616,
-        "maxPrice": 6600.474717561156,
-        "sort": "PRICE_DESC"
+        "minPrice": 6989.310975186527,
+        "maxPrice": 7408.20249542594,
+        "sort": "PRICE_ASC"
       },
-      "page": 3806,
-      "pageSize": 52
+      "page": 9157,
+      "pageSize": 25
     }
 settings: {}
 examples: ./.resources/refine.resources/examples

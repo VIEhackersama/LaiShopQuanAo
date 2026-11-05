@@ -1,0 +1,9 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/ai/capabilities"
+method: GET
+headers:
+  Accept: "*/*"
+settings: {}
+examples: ./.resources/capabilities 1.resources/examples
+order: 3000

@@ -1,0 +1,85 @@
+$kind: http-example
+name: Problem Details; inspect code, detail, traceId and optional fieldErrors.
+request:
+  url: "{{baseUrl}}/api/v1/search/voice/:id/execute"
+  method: POST
+  headers:
+    Accept: application/problem+json
+  pathVariables:
+    - key: id
+      value: "1464"
+      disabled: false
+      description: "(Required) "
+  body:
+    type: json
+    content: |-
+      {
+        "conditions": {
+          "categoryId": 4689,
+          "sizes": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "stri",
+            "string",
+            "string",
+            "string",
+            "st",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "strin",
+            "string",
+            "s",
+            "string"
+          ],
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "stri",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "st",
+            "string",
+            "st",
+            "stri",
+            "string"
+          ],
+          "minPrice": 7958.857091143727,
+          "maxPrice": 2753.6874660290778,
+          "sort": "NAME_ASC"
+        },
+        "text": "string",
+        "page": 1550,
+        "pageSize": 32
+      }
+response:
+  statusCode: 409
+  statusText: Conflict
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "string",
+        "detail": "string",
+        "status": 8553,
+        "traceId": "string"
+      }
+order: 6000
