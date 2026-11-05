@@ -5,6 +5,8 @@ frontend/playwright-report/
 backend/target/
 backend/.m2/
 .runtime/
+clip-service/.venv/
+clip-service/__pycache__/
 .env
 *.log
 media/
