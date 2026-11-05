@@ -22,9 +22,9 @@ public class RequestFilter extends OncePerRequestFilter {
         if (path.startsWith("/api/v1/search") || path.equals("/api/v1/auth/login") || path.equals("/api/v1/auth/register")) {
             long minute = Instant.now().getEpochSecond() / 60;
             if (windows.size() > 10000) windows.entrySet().removeIf(e -> e.getValue().minute() < minute);
-            String key = request.getRemoteAddr() + ":" + (path.contains("auth/") ? "auth" : "search");
+            String key = request.getRemoteAddr() + ":" + (path.contains("auth/") ? "auth" : path.equals("/api/v1/search/ai/chat") ? "ai-chat" : "search");
             Window window = windows.compute(key, (k, old) -> old == null || old.minute() != minute ? new Window(minute, 1) : new Window(minute, old.requests() + 1));
-            int limit = path.contains("auth/") ? 20 : 120;
+            int limit = path.contains("auth/") ? 20 : path.equals("/api/v1/search/ai/chat") ? 12 : 120;
             if (window.requests() > limit) {
                 response.setStatus(429); response.setContentType("application/problem+json"); response.setHeader("Retry-After", "60");
                 response.getWriter().write("{\"status\":429,\"code\":\"RATE_LIMITED\",\"detail\":\"Quá nhiều yêu cầu. Vui lòng thử lại sau một phút.\",\"traceId\":\"" + trace + "\"}"); return;

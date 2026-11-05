@@ -1,0 +1,25 @@
+$kind: http-example
+name: Problem Details; inspect code, detail, traceId and optional fieldErrors.
+request:
+  url: "{{baseUrl}}/api/v1/search/capabilities"
+  method: GET
+  headers:
+    Accept: application/problem+json
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 503
+  statusText: Service Unavailable
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "string",
+        "detail": "string",
+        "status": 8553,
+        "traceId": "string"
+      }
+order: 10000

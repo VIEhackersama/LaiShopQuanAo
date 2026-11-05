@@ -10,12 +10,12 @@ body:
   type: json
   content: |-
     {
-      "expectedTotal": 9773.293589241803,
+      "expectedTotal": "209000.00",
       "paymentMethod": "COD",
       "receiverName": "string",
-      "receiverPhone": "8776152321",
+      "receiverPhone": "0753250823",
       "shippingAddress": "string",
-      "cartVersion": 4857
+      "cartVersion": 4591
     }
 settings: {}
 examples: ./.resources/place.resources/examples

@@ -1,15 +1,15 @@
 $kind: http-request
 description: ""
-url: "{{baseUrl}}/api/v1/search/queries/:id?page=7406&pageSize=7406"
+url: "{{baseUrl}}/api/v1/search/queries/:id?page=4887&pageSize=4887"
 method: GET
 headers:
   Accept: "*/*"
 queryParams:
-  page: "7406"
-  pageSize: "7406"
+  page: "4887"
+  pageSize: "4887"
 pathVariables:
   - key: id
-    value: "4079"
+    value: "1464"
     disabled: false
     description: "(Required) "
 settings: {}

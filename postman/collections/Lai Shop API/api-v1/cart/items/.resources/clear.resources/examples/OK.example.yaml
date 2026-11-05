@@ -16,45 +16,45 @@ response:
     type: json
     content: |-
       {
-        "id": 6982,
-        "version": 5457,
+        "id": 849,
+        "version": 443,
         "items": [
           {
-            "id": 7772,
-            "variantId": 321,
+            "id": 7456,
+            "variantId": 7358,
             "productName": "string",
             "imageUrl": "string",
             "sku": "string",
             "size": "string",
             "color": "string",
-            "quantity": 5901,
+            "quantity": 7987,
             "unitPrice": "string",
             "lineTotal": "string",
-            "stockQuantity": 9282,
+            "stockQuantity": 3618,
             "warnings": [
               "string",
               "string"
             ]
           },
           {
-            "id": 4511,
-            "variantId": 2304,
+            "id": 4627,
+            "variantId": 2943,
             "productName": "string",
             "imageUrl": "string",
             "sku": "string",
             "size": "string",
             "color": "string",
-            "quantity": 4395,
+            "quantity": 7807,
             "unitPrice": "string",
             "lineTotal": "string",
-            "stockQuantity": 2558,
+            "stockQuantity": 6280,
             "warnings": [
               "string",
               "string"
             ]
           }
         ],
-        "totalQuantity": 179,
+        "totalQuantity": 5753,
         "totalAmount": "string"
       }
 order: 1000

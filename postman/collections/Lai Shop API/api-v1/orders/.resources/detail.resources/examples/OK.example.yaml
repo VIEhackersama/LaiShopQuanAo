@@ -6,7 +6,7 @@ request:
     Accept: "*/*"
   pathVariables:
     - key: id
-      value: "4079"
+      value: "1464"
       disabled: false
       description: "(Required) "
   body:
@@ -21,10 +21,10 @@ response:
     type: json
     content: |-
       {
-        "id": 2379,
+        "id": 7919,
         "orderNumber": "string",
         "status": "string",
-        "createdAt": "1978-07-20T10:56:46.272Z",
+        "createdAt": "1954-04-03T14:37:32.263Z",
         "receiverName": "string",
         "receiverPhone": "string",
         "shippingAddress": "string",
@@ -38,7 +38,7 @@ response:
             "size": "string",
             "color": "string",
             "unitPrice": "string",
-            "quantity": 136,
+            "quantity": 231,
             "lineTotal": "string"
           },
           {
@@ -47,7 +47,7 @@ response:
             "size": "string",
             "color": "string",
             "unitPrice": "string",
-            "quantity": 484,
+            "quantity": 4186,
             "lineTotal": "string"
           }
         ],

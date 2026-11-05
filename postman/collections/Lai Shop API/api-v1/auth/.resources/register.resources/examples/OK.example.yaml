@@ -8,7 +8,7 @@ request:
     type: json
     content: |-
       {
-        "email": "p8aS2gdGQ@zsAvSV.xgwm",
+        "email": "ja7@RrFUlXBpZEczfOJ.raxs",
         "fullName": "string",
         "password": "stringstring"
       }
@@ -21,7 +21,7 @@ response:
     type: json
     content: |-
       {
-        "id": 4775,
+        "id": 860,
         "fullName": "string",
         "email": "string",
         "phone": "string",

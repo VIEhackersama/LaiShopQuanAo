@@ -84,6 +84,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/search/ai/chat": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["chat"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/orders": {
         parameters: {
             query?: never;
@@ -220,6 +236,38 @@ export interface paths {
             cookie?: never;
         };
         get: operations["capabilities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/search/ai/conversations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["conversation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/search/ai/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["capabilities_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -436,6 +484,38 @@ export interface components {
             /** Format: double */
             height?: number;
         };
+        ChatRequest: {
+            /** Format: uuid */
+            conversationId?: string;
+            /** Format: int64 */
+            expectedVersion?: number;
+            message: string;
+        };
+        ChatResponse: {
+            /** Format: uuid */
+            conversationId?: string;
+            /** Format: int64 */
+            version?: number;
+            reply?: string;
+            appliedFilters?: components["schemas"]["SearchArguments"];
+            /** Format: int64 */
+            queryId?: number;
+            products?: components["schemas"]["ProductPage"];
+            provider?: string;
+            model?: string;
+        };
+        SearchArguments: {
+            terms: string[];
+            /** Format: int64 */
+            categoryId?: number;
+            sizes: string[];
+            colors: string[];
+            minPrice?: number;
+            maxPrice?: number;
+            /** @enum {string} */
+            sort: "RELEVANCE" | "PRICE_ASC" | "PRICE_DESC" | "NEWEST" | "NAME_ASC";
+            inStockOnly: boolean;
+        };
         PlaceOrderRequest: {
             receiverName: string;
             receiverPhone: string;
@@ -544,6 +624,26 @@ export interface components {
             voice?: boolean;
             image?: boolean;
         };
+        Conversation: {
+            /** Format: uuid */
+            id?: string;
+            /** Format: int64 */
+            version?: number;
+            state?: components["schemas"]["SearchArguments"];
+            messages?: components["schemas"]["Message"][];
+        };
+        Message: {
+            role?: string;
+            content?: string;
+            /** Format: int64 */
+            queryId?: number;
+        };
+        AiCapabilities: {
+            enabled?: boolean;
+            provider?: string;
+            model?: string;
+            description?: string;
+        };
         ImageResponse: {
             imageUrl?: string;
             altText?: string;
@@ -591,9 +691,9 @@ export interface components {
             name?: string;
         };
         CsrfToken: {
-            headerName?: string;
-            token?: string;
             parameterName?: string;
+            token?: string;
+            headerName?: string;
         };
         CsrfResponse: {
             token?: string;
@@ -1066,6 +1166,111 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["SearchResponse"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+        };
+    };
+    chat: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChatRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ChatResponse"];
                 };
             };
             /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
@@ -2314,6 +2519,210 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["Capabilities"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+        };
+    };
+    conversation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Conversation"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+            /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ApiProblem"];
+                };
+            };
+        };
+    };
+    capabilities_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AiCapabilities"];
                 };
             };
             /** @description Problem Details; inspect code, detail, traceId and optional fieldErrors. */

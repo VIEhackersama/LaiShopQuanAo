@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/ai/conversations/:id"
+method: GET
+headers:
+  Accept: "*/*"
+pathVariables:
+  - key: id
+    value: bfa566a4-8fff-a744-938c-fcb6123efdff
+    disabled: false
+    description: "(Required) "
+settings: {}
+examples: ./.resources/conversation.resources/examples
+order: 2000

@@ -1,18 +1,18 @@
 $kind: http-example
 request:
-  url: "{{baseUrl}}/api/v1/products?categoryId=6305&sizes=string,string,st,string,string,string,strin,string,string,string,string,string,string,string,string,string,s,string,string,string&colors=string,string,string,string,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string&minPrice=9367.283696774393&maxPrice=9214.218617416918&sort=PRICE_ASC&page=7406&pageSize=7406"
+  url: "{{baseUrl}}/api/v1/products?categoryId=7212&sizes=stri,string,strin,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string,string&colors=string,stri,string,string,string,string,string,string,string,s,string,string,string,string,string,s,string,string,string,string&minPrice=3858.9605456218123&maxPrice=6764.536374248564&sort=NEWEST&page=4887&pageSize=4887"
   method: GET
   headers:
     Accept: "*/*"
   queryParams:
-    categoryId: "6305"
-    sizes: string,string,st,string,string,string,strin,string,string,string,string,string,string,string,string,string,s,string,string,string
-    colors: string,string,string,string,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string
-    minPrice: "9367.283696774393"
-    maxPrice: "9214.218617416918"
-    sort: PRICE_ASC
-    page: "7406"
-    pageSize: "7406"
+    categoryId: "7212"
+    sizes: stri,string,strin,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string,string
+    colors: string,stri,string,string,string,string,string,string,string,s,string,string,string,string,string,s,string,string,string,string
+    minPrice: "3858.9605456218123"
+    maxPrice: "6764.536374248564"
+    sort: NEWEST
+    page: "4887"
+    pageSize: "4887"
   body:
     type: text
     content: ""
@@ -27,7 +27,7 @@ response:
       {
         "items": [
           {
-            "id": 9226,
+            "id": 2328,
             "name": "string",
             "description": "string",
             "imageUrl": "string",
@@ -37,10 +37,10 @@ response:
               "string",
               "string"
             ],
-            "inStock": true
+            "inStock": false
           },
           {
-            "id": 2901,
+            "id": 5542,
             "name": "string",
             "description": "string",
             "imageUrl": "string",
@@ -53,8 +53,8 @@ response:
             "inStock": false
           }
         ],
-        "page": 3819,
-        "pageSize": 2826,
-        "total": 5042
+        "page": 7059,
+        "pageSize": 6088,
+        "total": 814
       }
 order: 1000

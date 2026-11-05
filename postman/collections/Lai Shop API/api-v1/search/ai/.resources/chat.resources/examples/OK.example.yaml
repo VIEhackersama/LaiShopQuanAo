@@ -1,0 +1,103 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/search/ai/chat"
+  method: POST
+  headers:
+    Accept: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "message": "str",
+        "conversationId": "bc695b64-1ac2-5026-8a9e-da3f0af75ac9",
+        "expectedVersion": 1330
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "conversationId": "f95bebd4-40ad-e011-8b40-ecbdfb490a7d",
+        "version": 6901,
+        "reply": "string",
+        "appliedFilters": {
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string"
+          ],
+          "inStockOnly": false,
+          "sizes": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "strin",
+            "str",
+            "string",
+            "string"
+          ],
+          "sort": "NAME_ASC",
+          "terms": [
+            "s",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string"
+          ],
+          "categoryId": 7297,
+          "minPrice": 9026.853637769818,
+          "maxPrice": 4308.521661441773
+        },
+        "queryId": 1700,
+        "products": {
+          "items": [
+            {
+              "id": 8179,
+              "name": "string",
+              "description": "string",
+              "imageUrl": "string",
+              "minPrice": "string",
+              "maxPrice": "string",
+              "colors": [
+                "string",
+                "string"
+              ],
+              "inStock": false
+            },
+            {
+              "id": 7698,
+              "name": "string",
+              "description": "string",
+              "imageUrl": "string",
+              "minPrice": "string",
+              "maxPrice": "string",
+              "colors": [
+                "string",
+                "string"
+              ],
+              "inStock": false
+            }
+          ],
+          "page": 2192,
+          "pageSize": 9326,
+          "total": 8147
+        },
+        "provider": "string",
+        "model": "string"
+      }
+order: 1000

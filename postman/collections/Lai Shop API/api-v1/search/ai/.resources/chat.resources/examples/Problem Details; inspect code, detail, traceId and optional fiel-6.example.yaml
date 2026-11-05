@@ -1,0 +1,30 @@
+$kind: http-example
+name: Problem Details; inspect code, detail, traceId and optional fieldErrors.
+request:
+  url: "{{baseUrl}}/api/v1/search/ai/chat"
+  method: POST
+  headers:
+    Accept: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "message": "str",
+        "conversationId": "bc695b64-1ac2-5026-8a9e-da3f0af75ac9",
+        "expectedVersion": 1330
+      }
+response:
+  statusCode: 429
+  statusText: Too Many Requests
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "code": "string",
+        "detail": "string",
+        "status": 8553,
+        "traceId": "string"
+      }
+order: 8000

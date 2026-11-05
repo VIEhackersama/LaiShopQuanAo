@@ -1,12 +1,12 @@
 $kind: http-request
 description: ""
-url: "{{baseUrl}}/api/v1/orders?page=7406&pageSize=7406"
+url: "{{baseUrl}}/api/v1/orders?page=4887&pageSize=4887"
 method: GET
 headers:
   Accept: "*/*"
 queryParams:
-  page: "7406"
-  pageSize: "7406"
+  page: "4887"
+  pageSize: "4887"
 settings: {}
 examples: ./.resources/list.resources/examples
 order: 1000

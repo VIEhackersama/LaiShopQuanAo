@@ -1,0 +1,27 @@
+import { test, expect } from '@playwright/test';
+
+test('AI searches real catalog and keeps filters across turns', async ({ page }, info) => {
+  test.setTimeout(120000);
+  await page.goto('/');
+  await page.getByTestId('ai-tab').click();
+  await expect(page.getByTestId('ai-input')).toBeEnabled();
+  await page.getByTestId('ai-input').fill('Tìm áo màu đen size M dưới 300 nghìn');
+  await page.getByTestId('ai-send').click();
+  await expect(page.getByTestId('ai-products')).toBeVisible({ timeout: 90000 });
+  await expect(page.getByTestId('ai-filters')).toContainText('Đen');
+  await expect(page.getByTestId('ai-filters')).toContainText('Size M');
+  await expect(page.getByTestId('ai-filters')).toContainText('300.000');
+  await page.getByTestId('ai-input').fill('Giữ loại áo, màu và size, chỉ lấy dưới 200 nghìn và xếp giá rẻ trước');
+  await page.getByTestId('ai-send').click();
+  await expect(page.getByTestId('ai-filters')).toContainText('200.000', { timeout: 90000 });
+  await expect(page.getByTestId('ai-filters')).toContainText('Đen');
+  await expect(page.getByTestId('ai-filters')).toContainText('Size M');
+  await expect(page.getByTestId('ai-filters')).toContainText('Giá tăng dần');
+  await expect(page.getByTestId('ai-thinking')).not.toBeVisible();
+  expect(await page.getByTestId('ai-products').locator('[data-testid^="product-"]').count()).toBeGreaterThan(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
+  await page.screenshot({ path: `test-results/${info.project.name}-ai-search.png`, fullPage: true });
+  await page.getByTestId('ai-reset').click();
+  await expect(page.getByTestId('ai-products')).not.toBeVisible();
+  await expect(page.getByTestId('ai-input')).toHaveValue('');
+});

@@ -9,8 +9,8 @@ body:
   type: json
   content: |-
     {
-      "variantId": 5237,
-      "quantity": 6173
+      "variantId": 1808,
+      "quantity": 6059
     }
 settings: {}
 examples: ./.resources/add.resources/examples

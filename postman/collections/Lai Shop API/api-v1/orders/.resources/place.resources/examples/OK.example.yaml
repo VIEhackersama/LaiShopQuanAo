@@ -9,12 +9,12 @@ request:
     type: json
     content: |-
       {
-        "expectedTotal": 9773.293589241803,
+        "expectedTotal": "209000.00",
         "paymentMethod": "COD",
         "receiverName": "string",
-        "receiverPhone": "8776152321",
+        "receiverPhone": "0753250823",
         "shippingAddress": "string",
-        "cartVersion": 4857
+        "cartVersion": 4591
       }
 response:
   statusCode: 200
@@ -25,10 +25,10 @@ response:
     type: json
     content: |-
       {
-        "id": 2379,
+        "id": 7919,
         "orderNumber": "string",
         "status": "string",
-        "createdAt": "1978-07-20T10:56:46.272Z",
+        "createdAt": "1954-04-03T14:37:32.263Z",
         "receiverName": "string",
         "receiverPhone": "string",
         "shippingAddress": "string",
@@ -42,7 +42,7 @@ response:
             "size": "string",
             "color": "string",
             "unitPrice": "string",
-            "quantity": 136,
+            "quantity": 231,
             "lineTotal": "string"
           },
           {
@@ -51,7 +51,7 @@ response:
             "size": "string",
             "color": "string",
             "unitPrice": "string",
-            "quantity": 484,
+            "quantity": 4186,
             "lineTotal": "string"
           }
         ],

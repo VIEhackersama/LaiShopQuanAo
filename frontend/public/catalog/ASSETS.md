@@ -2,7 +2,7 @@
 
 ## Ảnh mẫu đang sử dụng
 
-10 ảnh chụp thật không watermark nằm trong `photos/`, tải từ Pexels theo [Pexels License](https://www.pexels.com/license/). `photos/sources.json` lưu tên tác giả, trang gốc, URL tải và giấy phép của từng ảnh. Ảnh dùng làm dữ liệu mẫu giao diện, không khẳng định các mẫu chụp hoặc màu ảnh là hàng thực tế của shop. Chín ảnh minh họa catalog và một ảnh giá treo dùng cho hero.
+28 ảnh chụp stock nằm trong `photos/`, tải từ Pexels theo [Pexels License](https://www.pexels.com/license/). `photos/sources.json` và `photos/expanded-sources.json` lưu tên tác giả, trang gốc, URL tải và giấy phép của từng ảnh. Ảnh dùng làm dữ liệu mẫu giao diện, không khẳng định các mẫu chụp hoặc màu ảnh là hàng thực tế của shop. 27 ảnh minh họa catalog và một ảnh giá treo dùng cho hero.
 
 ## Asset cũ
 

@@ -27,6 +27,11 @@ server:
         secure: ${COOKIE_SECURE:true}
         same-site: lax
 app:
+  ai:
+    enabled: ${AI_ENABLED:false}
+    ollama-url: ${AI_OLLAMA_URL:http://127.0.0.1:11434}
+    model: ${AI_MODEL:qwen3:8b}
+    timeout-seconds: ${AI_TIMEOUT_SECONDS:60}
   media-root: ${MEDIA_ROOT:./media}
   bank:
     name: ${BANK_NAME:}

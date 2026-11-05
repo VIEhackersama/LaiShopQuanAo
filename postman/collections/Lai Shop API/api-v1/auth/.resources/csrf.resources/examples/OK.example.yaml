@@ -1,12 +1,12 @@
 $kind: http-example
 request:
-  url: "{{baseUrl}}/api/v1/auth/csrf?token=string&parameterName=string&headerName=string"
+  url: "{{baseUrl}}/api/v1/auth/csrf?parameterName=string&token=string&headerName=string"
   method: GET
   headers:
     Accept: "*/*"
   queryParams:
-    token: string
     parameterName: string
+    token: string
     headerName: string
   body:
     type: text
