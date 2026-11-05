@@ -4,6 +4,9 @@ test('AI searches real catalog and keeps filters across turns', async ({ page },
   test.setTimeout(120000);
   await page.goto('/');
   await page.getByTestId('ai-tab').click();
+  await expect(page).toHaveURL(/\/assistant$/);
+  await expect(page.getByTestId('assistant-page')).toBeVisible();
+  await expect(page.getByTestId('search-input')).toHaveCount(0);
   await expect(page.getByTestId('ai-input')).toBeEnabled();
   await page.getByTestId('ai-input').fill('Tìm áo màu đen size M dưới 300 nghìn');
   await page.getByTestId('ai-send').click();
@@ -19,9 +22,17 @@ test('AI searches real catalog and keeps filters across turns', async ({ page },
   await expect(page.getByTestId('ai-filters')).toContainText('Giá tăng dần');
   await expect(page.getByTestId('ai-thinking')).not.toBeVisible();
   expect(await page.getByTestId('ai-products').locator('[data-testid^="product-"]').count()).toBeGreaterThan(0);
+  const cardSize = await page.getByTestId('ai-products').locator('[data-testid^="product-"]').first().boundingBox();
+  expect(cardSize?.height).toBeLessThan(150);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   await page.screenshot({ path: `test-results/${info.project.name}-ai-search.png`, fullPage: true });
+  await page.getByTestId('site-footer').screenshot({ path: `test-results/${info.project.name}-footer.png` });
   await page.getByTestId('ai-reset').click();
   await expect(page.getByTestId('ai-products')).not.toBeVisible();
   await expect(page.getByTestId('ai-input')).toHaveValue('');
+  await page.goto('/');
+  await page.getByTestId('footer-assistant-link').click();
+  await expect(page).toHaveURL(/\/assistant$/);
+  await page.reload();
+  await expect(page.getByTestId('assistant-page')).toBeVisible();
 });
