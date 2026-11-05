@@ -45,6 +45,7 @@ services:
       AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-60}
       CLIP_SEARCH_ENABLED: ${CLIP_SEARCH_ENABLED:-true}
       CLIP_SERVICE_URL: ${CLIP_SERVICE_URL:-http://clip-service:8001}
+      SPEECH_SERVICE_URL: ${SPEECH_SERVICE_URL:-http://clip-service:8001}
     volumes:
       - media_data:/app/media
     ports:

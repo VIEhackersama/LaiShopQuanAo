@@ -11,3 +11,5 @@ media/
 backups/
 *.tsbuildinfo
 .postman/
+__pycache__/
+*.pyc

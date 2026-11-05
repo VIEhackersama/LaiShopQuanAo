@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Camera, Microphone, X, Stop } from '@phosphor-icons/react';
 import { api, capabilitiesSchema, searchSchema } from './api';
 import { ErrorMessage } from './shared';
@@ -14,12 +14,14 @@ export function MediaDialog({ mode, onClose }: { mode: 'voice' | 'image'; onClos
   const speechTextRef = useRef<string>('');
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState('');
   const [recording, setRecording] = useState(false);
   const [durationSeconds, setDurationSeconds] = useState<number | null>(null);
   const [localError, setLocalError] = useState<Error | null>(null);
   const [transcript, setTranscript] = useState('');
+  const [liveTranscript, setLiveTranscript] = useState('');
   const [voiceId, setVoiceId] = useState<number | null>(null);
   const [crop, setCrop] = useState(false);
   const [region, setRegion] = useState({ x: 0, y: 0, width: 1, height: 1 });
@@ -68,6 +70,7 @@ export function MediaDialog({ mode, onClose }: { mode: 'voice' | 'image'; onClos
         const finalTranscript = speechTextRef.current.trim() || result.text || '';
         setTranscript(finalTranscript);
       } else {
+        queryClient.setQueryData(['catalog', `queryId=${result.queryId}`], result.products);
         navigate(`/search?queryId=${result.queryId}`);
         onClose();
       }
@@ -85,6 +88,7 @@ export function MediaDialog({ mode, onClose }: { mode: 'voice' | 'image'; onClos
       })
     }),
     onSuccess: result => {
+      queryClient.setQueryData(['catalog', `queryId=${result.queryId}`], result.products);
       navigate(`/search?queryId=${result.queryId}`);
       onClose();
     }
@@ -93,6 +97,10 @@ export function MediaDialog({ mode, onClose }: { mode: 'voice' | 'image'; onClos
   async function start() {
     setLocalError(null);
     speechTextRef.current = '';
+    setLiveTranscript('');
+    setVoiceId(null);
+    setTranscript('');
+    setFile(null);
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
       setLocalError(new Error('Trình duyệt chưa hỗ trợ ghi âm. Hãy dùng trình duyệt hiện đại qua HTTPS.'));
       return;
@@ -117,7 +125,11 @@ export function MediaDialog({ mode, onClose }: { mode: 'voice' | 'image'; onClos
             }
             if (captured) {
               speechTextRef.current = captured;
+              setLiveTranscript(captured);
             }
+          };
+          rec.onerror = (e: any) => {
+            console.debug('SpeechRecognition info:', e?.error);
           };
           rec.start();
           recognitionRef.current = rec;
@@ -171,13 +183,32 @@ export function MediaDialog({ mode, onClose }: { mode: 'voice' | 'image'; onClos
       {mode === 'voice' ? (
         <>
           <button data-testid="record-voice" disabled={!enabled || upload.isPending} onClick={() => recording ? recorder.current?.stop() : void start()}>
-            {recording ? <><Stop /> Dừng ghi âm</> : <><Microphone /> Bắt đầu ghi âm</>}
+            {recording ? <><Stop /> Dừng ghi âm</> : <><Microphone /> {file ? 'Ghi âm lại' : 'Bắt đầu ghi âm'}</>}
           </button>
+          {recording && (
+            <div className="voice-status-box" data-testid="voice-status-box" role="status" aria-live="polite">
+              <div className="voice-status-header">
+                <span className="voice-pulse-dot" aria-hidden="true" />
+                <span>Đang nghe bạn nói...</span>
+              </div>
+              <p className="voice-live-text" data-testid="voice-live-text">
+                {liveTranscript ? `“${liveTranscript}”` : 'Nói tên hoặc kiểu sản phẩm bạn muốn tìm...'}
+              </p>
+            </div>
+          )}
+          {!recording && file && voiceId === null && (
+            <div className="voice-captured-preview" data-testid="voice-captured-preview">
+              <div className="voice-preview-header">
+                <span className="voice-preview-badge">Đã ghi âm ({durationSeconds ? `${durationSeconds.toFixed(1)}s` : ''})</span>
+                {liveTranscript && <span className="voice-preview-text">Nhận diện được: “{liveTranscript}”</span>}
+              </div>
+            </div>
+          )}
           {preview && <audio controls src={preview} />}
           {voiceId !== null && (
             <label>
               Phiên âm
-              <input data-testid="voice-transcript" maxLength={100} value={transcript} onChange={e => setTranscript(e.target.value)} />
+              <input data-testid="voice-transcript" maxLength={100} value={transcript} onChange={e => setTranscript(e.target.value)} placeholder="Nhập hoặc sửa nội dung tìm kiếm..." />
               <button disabled={execute.isPending || !transcript.trim()} onClick={() => execute.mutate()}>
                 Tìm với nội dung này
               </button>
