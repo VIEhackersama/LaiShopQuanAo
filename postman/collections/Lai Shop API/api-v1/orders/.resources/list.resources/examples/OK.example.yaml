@@ -1,0 +1,104 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/orders?page=7406&pageSize=7406"
+  method: GET
+  headers:
+    Accept: "*/*"
+  queryParams:
+    page: "7406"
+    pageSize: "7406"
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": 1354,
+            "orderNumber": "string",
+            "status": "string",
+            "createdAt": "2005-02-21T12:13:44.568Z",
+            "receiverName": "string",
+            "receiverPhone": "string",
+            "shippingAddress": "string",
+            "totalAmount": "string",
+            "paymentMethod": "COD",
+            "paymentStatus": "string",
+            "items": [
+              {
+                "productName": "string",
+                "sku": "string",
+                "size": "string",
+                "color": "string",
+                "unitPrice": "string",
+                "quantity": 334,
+                "lineTotal": "string"
+              },
+              {
+                "productName": "string",
+                "sku": "string",
+                "size": "string",
+                "color": "string",
+                "unitPrice": "string",
+                "quantity": 1447,
+                "lineTotal": "string"
+              }
+            ],
+            "bank": {
+              "name": "string",
+              "account": "string",
+              "holder": "string"
+            },
+            "transferContent": "string"
+          },
+          {
+            "id": 5195,
+            "orderNumber": "string",
+            "status": "string",
+            "createdAt": "1951-07-17T20:39:57.411Z",
+            "receiverName": "string",
+            "receiverPhone": "string",
+            "shippingAddress": "string",
+            "totalAmount": "string",
+            "paymentMethod": "COD",
+            "paymentStatus": "string",
+            "items": [
+              {
+                "productName": "string",
+                "sku": "string",
+                "size": "string",
+                "color": "string",
+                "unitPrice": "string",
+                "quantity": 8402,
+                "lineTotal": "string"
+              },
+              {
+                "productName": "string",
+                "sku": "string",
+                "size": "string",
+                "color": "string",
+                "unitPrice": "string",
+                "quantity": 327,
+                "lineTotal": "string"
+              }
+            ],
+            "bank": {
+              "name": "string",
+              "account": "string",
+              "holder": "string"
+            },
+            "transferContent": "string"
+          }
+        ],
+        "page": 1450,
+        "pageSize": 7514,
+        "total": 2769
+      }
+order: 1000

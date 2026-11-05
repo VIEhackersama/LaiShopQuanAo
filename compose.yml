@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: laishop
+      POSTGRES_USER: laishop
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U laishop -d laishop"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/laishop
+      DATABASE_USER: laishop
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      COOKIE_SECURE: "true"
+      MEDIA_ROOT: /app/media
+      BANK_NAME: ${BANK_NAME:-}
+      BANK_ACCOUNT: ${BANK_ACCOUNT:-}
+      BANK_HOLDER: ${BANK_HOLDER:-}
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+  web:
+    build: ./frontend
+    environment:
+      SITE_HOST: ${SITE_HOST:-localhost}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [backend]
+    restart: unless-stopped
+  backup:
+    image: postgres:17
+    environment:
+      PGPASSWORD: ${DATABASE_PASSWORD}
+    entrypoint: [/bin/sh, -c]
+    command: ["while true; do pg_dump -h postgres -U laishop -d laishop -Fc -f /backups/laishop-$$(date +%Y%m%d-%H%M%S).dump && find /backups -name '*.dump' -mtime +7 -delete || exit 1; sleep 86400; done"]
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+volumes:
+  postgres_data:
+  media_data:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,9 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/checkout"
+method: GET
+headers:
+  Accept: "*/*"
+settings: {}
+examples: ./.resources/checkout.resources/examples
+order: 6000

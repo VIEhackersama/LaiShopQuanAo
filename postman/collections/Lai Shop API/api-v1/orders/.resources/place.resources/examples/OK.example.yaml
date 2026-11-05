@@ -1,0 +1,65 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/orders"
+  method: POST
+  headers:
+    Idempotency-Key: string
+    Accept: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "expectedTotal": 9773.293589241803,
+        "paymentMethod": "COD",
+        "receiverName": "string",
+        "receiverPhone": "8776152321",
+        "shippingAddress": "string",
+        "cartVersion": 4857
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "id": 2379,
+        "orderNumber": "string",
+        "status": "string",
+        "createdAt": "1978-07-20T10:56:46.272Z",
+        "receiverName": "string",
+        "receiverPhone": "string",
+        "shippingAddress": "string",
+        "totalAmount": "string",
+        "paymentMethod": "COD",
+        "paymentStatus": "string",
+        "items": [
+          {
+            "productName": "string",
+            "sku": "string",
+            "size": "string",
+            "color": "string",
+            "unitPrice": "string",
+            "quantity": 136,
+            "lineTotal": "string"
+          },
+          {
+            "productName": "string",
+            "sku": "string",
+            "size": "string",
+            "color": "string",
+            "unitPrice": "string",
+            "quantity": 484,
+            "lineTotal": "string"
+          }
+        ],
+        "bank": {
+          "name": "string",
+          "account": "string",
+          "holder": "string"
+        },
+        "transferContent": "string"
+      }
+order: 1000

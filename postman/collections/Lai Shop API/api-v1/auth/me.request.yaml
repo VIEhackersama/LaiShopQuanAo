@@ -1,0 +1,9 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/auth/me"
+method: GET
+headers:
+  Accept: "*/*"
+settings: {}
+examples: ./.resources/me.resources/examples
+order: 4000

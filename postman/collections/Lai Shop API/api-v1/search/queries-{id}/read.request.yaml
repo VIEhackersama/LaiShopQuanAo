@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/queries/:id/media"
+method: GET
+headers:
+  Accept: "*/*"
+pathVariables:
+  - key: id
+    value: "4079"
+    disabled: false
+    description: "(Required) "
+settings: {}
+examples: ./.resources/read.resources/examples
+order: 3000

@@ -1,0 +1,162 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/search/text"
+  method: POST
+  headers:
+    Accept: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "conditions": {
+          "categoryId": 504,
+          "sizes": [
+            "stri",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "strin",
+            "string",
+            "st",
+            "string",
+            "string",
+            "stri",
+            "string",
+            "strin",
+            "str",
+            "string",
+            "string",
+            "string",
+            "stri"
+          ],
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string"
+          ],
+          "minPrice": 6406.272354070097,
+          "maxPrice": 6998.307569883764,
+          "sort": "NEWEST"
+        },
+        "text": "string",
+        "page": 209,
+        "pageSize": 72
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "queryId": 3415,
+        "type": "string",
+        "status": "string",
+        "text": "string",
+        "conditions": {
+          "categoryId": 2343,
+          "sizes": [
+            "strin",
+            "string",
+            "string",
+            "st",
+            "s",
+            "string",
+            "string",
+            "string",
+            "string",
+            "stri",
+            "string",
+            "",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "s",
+            "string",
+            "string"
+          ],
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "str",
+            "string",
+            "string",
+            "string"
+          ],
+          "minPrice": 2415.144252590835,
+          "maxPrice": 4405.859913676977,
+          "sort": "PRICE_DESC"
+        },
+        "products": {
+          "items": [
+            {
+              "id": 9452,
+              "name": "string",
+              "description": "string",
+              "imageUrl": "string",
+              "minPrice": "string",
+              "maxPrice": "string",
+              "colors": [
+                "string",
+                "string"
+              ],
+              "inStock": false
+            },
+            {
+              "id": 33,
+              "name": "string",
+              "description": "string",
+              "imageUrl": "string",
+              "minPrice": "string",
+              "maxPrice": "string",
+              "colors": [
+                "string",
+                "string"
+              ],
+              "inStock": false
+            }
+          ],
+          "page": 4955,
+          "pageSize": 555,
+          "total": 5073
+        }
+      }
+order: 1000

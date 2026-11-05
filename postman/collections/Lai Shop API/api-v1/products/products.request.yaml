@@ -1,0 +1,40 @@
+$kind: http-request
+description: ""
+url: '{{baseUrl}}/api/v1/products?categoryId=6305&sizes=["string","string","st","string","string","string","strin","string","string","string","string","string","string","string","string","string","s","string","string","string"]&colors=["string","string","string","string","string","string","string","string","str","string","string","string","string","string","string","string","string","string","string","string"]&minPrice=9367.283696774393&maxPrice=9214.218617416918&sort=PRICE_ASC&page=7406&pageSize=7406'
+method: GET
+headers:
+  Accept: "*/*"
+queryParams:
+  - key: categoryId
+    value: "6305"
+    disabled: false
+    description: "(Required) "
+  - key: sizes
+    value: '["string","string","st","string","string","string","strin","string","string","string","string","string","string","string","string","string","s","string","string","string"]'
+    disabled: false
+    description: "(Required) "
+  - key: colors
+    value: '["string","string","string","string","string","string","string","string","str","string","string","string","string","string","string","string","string","string","string","string"]'
+    disabled: false
+    description: "(Required) "
+  - key: minPrice
+    value: "9367.283696774393"
+    disabled: false
+    description: "(Required) "
+  - key: maxPrice
+    value: "9214.218617416918"
+    disabled: false
+    description: "(Required) "
+  - key: sort
+    value: PRICE_ASC
+    disabled: false
+    description: "(Required) "
+  - key: page
+    value: "7406"
+    disabled: false
+  - key: pageSize
+    value: "7406"
+    disabled: false
+settings: {}
+examples: ./.resources/products.resources/examples
+order: 1000

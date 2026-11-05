@@ -1,0 +1,73 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/voice/:id/execute"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: "*/*"
+pathVariables:
+  - key: id
+    value: "4079"
+    disabled: false
+    description: "(Required) "
+body:
+  type: json
+  content: |-
+    {
+      "conditions": {
+        "categoryId": 504,
+        "sizes": [
+          "stri",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "strin",
+          "string",
+          "st",
+          "string",
+          "string",
+          "stri",
+          "string",
+          "strin",
+          "str",
+          "string",
+          "string",
+          "string",
+          "stri"
+        ],
+        "colors": [
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string"
+        ],
+        "minPrice": 6406.272354070097,
+        "maxPrice": 6998.307569883764,
+        "sort": "NEWEST"
+      },
+      "text": "string",
+      "page": 209,
+      "pageSize": 72
+    }
+settings: {}
+examples: ./.resources/execute.resources/examples
+order: 2000

@@ -1,0 +1,72 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/queries/:id/refine"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: "*/*"
+pathVariables:
+  - key: id
+    value: "4079"
+    disabled: false
+    description: "(Required) "
+body:
+  type: json
+  content: |-
+    {
+      "conditions": {
+        "categoryId": 3467,
+        "sizes": [
+          "string",
+          "stri",
+          "string",
+          "s",
+          "string",
+          "string",
+          "string",
+          "string",
+          "str",
+          "string",
+          "st",
+          "string",
+          "string",
+          "",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string"
+        ],
+        "colors": [
+          "string",
+          "strin",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string",
+          "string"
+        ],
+        "minPrice": 2149.9341912567616,
+        "maxPrice": 6600.474717561156,
+        "sort": "PRICE_DESC"
+      },
+      "page": 3806,
+      "pageSize": 52
+    }
+settings: {}
+examples: ./.resources/refine.resources/examples
+order: 2000

@@ -1,0 +1,138 @@
+@startuml
+' Current application analysis model - generated from the approved 15-class baseline
+hide methods
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+class Customer {
+  customerId : Long
+  fullName : String
+  email : String
+  passwordHash : String
+  phone : String?
+  shippingAddress : String?
+  createdAt : DateTime
+}
+abstract class SearchQuery {
+  queryId : Long
+  searchSession : String
+  queryType : String
+  status : String
+  createdAt : DateTime
+  searchConditions : JSON? {JSONB}
+}
+class TextQuery {
+  text : String
+}
+class VoiceQuery {
+  audioUrl : String
+  transcribedText : String?
+}
+class ImageQuery {
+  imageUrl : String
+  selectedRegion : JSON? {JSONB}
+}
+class SearchResult {
+  resultId : Long
+  rank : Integer
+  score : Decimal?
+}
+class Category {
+  categoryId : Long
+  name : String
+  description : String?
+  isActive : Boolean
+}
+class Product {
+  productId : Long
+  name : String
+  description : String?
+  /minPrice : Money
+  /maxPrice : Money
+  embedding : JSON? {JSONB}
+  isActive : Boolean
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+class ProductVariant {
+  variantId : Long
+  sku : String
+  size : String
+  color : String
+  price : Money
+  stockQuantity : Integer
+  isActive : Boolean
+}
+class ProductImage {
+  imageId : Long
+  imageUrl : String
+  altText : String?
+  displayOrder : Integer
+}
+class Cart {
+  cartId : Long
+  version : Long
+  createdAt : DateTime
+  updatedAt : DateTime
+  /totalQuantity : Integer
+  /totalAmount : Money
+}
+class CartItem {
+  cartItemId : Long
+  quantity : Integer
+  addedAt : DateTime
+  /unitPrice : Money
+  /lineTotal : Money
+}
+class Order {
+  orderId : Long
+  orderNumber : String
+  status : OrderStatus
+  receiverName : String
+  receiverPhone : String
+  shippingAddress : String
+  totalAmount : Money
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+class OrderItem {
+  orderItemId : Long
+  productName : String
+  sku : String
+  size : String
+  color : String
+  unitPrice : Money
+  quantity : Integer
+  /lineTotal : Money
+}
+class Payment {
+  paymentId : Long
+  method : PaymentMethod
+  status : PaymentStatus
+  amount : Money
+  transactionReference : String?
+  paidAt : DateTime?
+  createdAt : DateTime
+}
+SearchQuery <|-- TextQuery
+SearchQuery <|-- VoiceQuery
+SearchQuery <|-- ImageQuery
+Customer "1" -- "0..1" Cart : owns
+Customer "1" -- "0..*" Order : places
+Customer "0..1" -- "0..*" SearchQuery : creates
+Category "1" -- "0..*" Product : classifies
+Product "1" -- "1..*" ProductVariant : has variants
+Product "1" -- "0..*" ProductImage : has images
+Cart "1" *-- "0..*" CartItem : contains
+CartItem "0..*" -- "1" ProductVariant : selects
+Order "1" *-- "1..*" OrderItem : contains
+OrderItem "0..*" -- "1" ProductVariant : refers to
+Order "1" -- "0..1" Payment : has payment
+SearchQuery "1" *-- "0..*" SearchResult : contains
+SearchResult "0..*" -- "1" Product : matches
+legend left
+  ? = optional; / = derived, not a database column
+  JSON = analysis type; PostgreSQL storage = JSONB
+  Long / Money / DateTime = indicative analysis types
+  Exactly 15 business classes; inherited attributes are not repeated
+endlegend
+@enduml

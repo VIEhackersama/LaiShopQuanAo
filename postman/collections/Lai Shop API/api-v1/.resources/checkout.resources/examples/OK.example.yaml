@@ -1,0 +1,71 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/checkout"
+  method: GET
+  headers:
+    Accept: "*/*"
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "cart": {
+          "id": 4878,
+          "version": 5306,
+          "items": [
+            {
+              "id": 8123,
+              "variantId": 5450,
+              "productName": "string",
+              "imageUrl": "string",
+              "sku": "string",
+              "size": "string",
+              "color": "string",
+              "quantity": 2494,
+              "unitPrice": "string",
+              "lineTotal": "string",
+              "stockQuantity": 8655,
+              "warnings": [
+                "string",
+                "string"
+              ]
+            },
+            {
+              "id": 9847,
+              "variantId": 7391,
+              "productName": "string",
+              "imageUrl": "string",
+              "sku": "string",
+              "size": "string",
+              "color": "string",
+              "quantity": 3754,
+              "unitPrice": "string",
+              "lineTotal": "string",
+              "stockQuantity": 6927,
+              "warnings": [
+                "string",
+                "string"
+              ]
+            }
+          ],
+          "totalQuantity": 9484,
+          "totalAmount": "string"
+        },
+        "receiverName": "string",
+        "receiverPhone": "string",
+        "shippingAddress": "string",
+        "bank": {
+          "name": "string",
+          "account": "string",
+          "holder": "string"
+        },
+        "bankTransferAvailable": false
+      }
+order: 1000

@@ -1,0 +1,59 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/products/:id"
+  method: GET
+  headers:
+    Accept: "*/*"
+  pathVariables:
+    - key: id
+      value: "4079"
+      disabled: false
+      description: "(Required) "
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "id": 1352,
+        "name": "string",
+        "description": "string",
+        "category": "string",
+        "variants": [
+          {
+            "id": 4252,
+            "sku": "string",
+            "size": "string",
+            "color": "string",
+            "price": "string",
+            "stockQuantity": 4751,
+            "active": true
+          },
+          {
+            "id": 2447,
+            "sku": "string",
+            "size": "string",
+            "color": "string",
+            "price": "string",
+            "stockQuantity": 851,
+            "active": false
+          }
+        ],
+        "images": [
+          {
+            "imageUrl": "string",
+            "altText": "string"
+          },
+          {
+            "imageUrl": "string",
+            "altText": "string"
+          }
+        ]
+      }
+order: 1000

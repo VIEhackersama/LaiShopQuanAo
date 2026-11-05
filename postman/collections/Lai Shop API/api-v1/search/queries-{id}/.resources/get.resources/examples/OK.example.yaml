@@ -1,0 +1,115 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/search/queries/:id?page=7406&pageSize=7406"
+  method: GET
+  headers:
+    Accept: "*/*"
+  queryParams:
+    page: "7406"
+    pageSize: "7406"
+  pathVariables:
+    - key: id
+      value: "4079"
+      disabled: false
+      description: "(Required) "
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "queryId": 3415,
+        "type": "string",
+        "status": "string",
+        "text": "string",
+        "conditions": {
+          "categoryId": 2343,
+          "sizes": [
+            "strin",
+            "string",
+            "string",
+            "st",
+            "s",
+            "string",
+            "string",
+            "string",
+            "string",
+            "stri",
+            "string",
+            "",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "s",
+            "string",
+            "string"
+          ],
+          "colors": [
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "string",
+            "str",
+            "string",
+            "string",
+            "string"
+          ],
+          "minPrice": 2415.144252590835,
+          "maxPrice": 4405.859913676977,
+          "sort": "PRICE_DESC"
+        },
+        "products": {
+          "items": [
+            {
+              "id": 9452,
+              "name": "string",
+              "description": "string",
+              "imageUrl": "string",
+              "minPrice": "string",
+              "maxPrice": "string",
+              "colors": [
+                "string",
+                "string"
+              ],
+              "inStock": false
+            },
+            {
+              "id": 33,
+              "name": "string",
+              "description": "string",
+              "imageUrl": "string",
+              "minPrice": "string",
+              "maxPrice": "string",
+              "colors": [
+                "string",
+                "string"
+              ],
+              "inStock": false
+            }
+          ],
+          "page": 4955,
+          "pageSize": 555,
+          "total": 5073
+        }
+      }
+order: 1000

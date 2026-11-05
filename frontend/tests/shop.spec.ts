@@ -1,0 +1,55 @@
+import { test, expect } from '@playwright/test';
+
+for (const payment of ['COD', 'BANK_TRANSFER'] as const) test(`customer buys with ${payment} and reads order`, async ({ page }, info) => {
+  await page.goto('/');
+  await page.getByTestId('search-input').fill('ao thun');
+  await page.getByTestId('search-submit').click();
+  await page.getByTestId('product-1').click();
+  await page.getByTestId('size-L').click();
+  await page.getByTestId('color-cream').click();
+  await expect(page.getByTestId('variant-price')).toContainText('209.000');
+  await page.getByTestId('add-to-cart').click();
+  await expect(page).toHaveURL(/login/);
+  await page.getByTestId('auth-switch').click();
+  await page.getByTestId('auth-name').fill('Khách kiểm thử');
+  await page.getByTestId('auth-email').fill(`e2e-${info.project.name}-${Date.now()}@example.test`);
+  await page.getByTestId('auth-password').fill('LaiShop-E2E-password');
+  await page.getByTestId('auth-submit').click();
+  await expect(page).toHaveURL(/products\/1/);
+  await page.getByTestId('size-L').click();
+  await page.getByTestId('color-cream').click();
+  await page.getByTestId('add-to-cart').click();
+  await expect(page.getByTestId('cart-notice')).toBeVisible();
+  await page.getByTestId('cart-link').click();
+  await expect(page.getByTestId('cart-total')).toContainText('209.000');
+  await page.reload();
+  await expect(page.getByTestId('cart-total')).toContainText('209.000');
+  await page.getByTestId('checkout-link').click();
+  await page.getByTestId('receiver-phone').fill('0912345678');
+  await page.getByTestId('shipping-address').fill('123 Đường kiểm thử, Hà Nội');
+  if (payment === 'BANK_TRANSFER') await page.getByTestId('payment-bank').check();
+  await page.getByTestId('place-order').click();
+  await expect(page.getByTestId('order-number')).toContainText('LAI-');
+  await expect(page.getByTestId('payment-status')).toContainText('Chưa xác nhận nhận tiền');
+  const url = page.url(); await page.reload();
+  await expect(page.getByTestId('order-number')).toBeVisible();
+  await page.getByTestId('orders-link').click();
+  await expect(page.locator('[data-testid^="order-"]')).toHaveCount(1);
+  await page.goto(url);
+  await expect(page.getByTestId('order-number')).toBeVisible();
+  await page.screenshot({ path: `test-results/${info.project.name}-${payment}-order.png`, fullPage: true });
+});
+
+test('search media shows unavailable status and responsive catalog fits viewport', async ({ page }, info) => {
+  await page.goto('/');
+  await expect(page.getByTestId('product-1')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
+  await page.screenshot({ path: `test-results/${info.project.name}-catalog.png`, fullPage: true });
+  await page.getByTestId('voice-open').click();
+  await expect(page.getByTestId('provider-unavailable')).toBeVisible();
+  await expect(page.getByTestId('record-voice')).toBeDisabled();
+  await page.keyboard.press('Escape');
+  await page.getByTestId('image-open').click();
+  await expect(page.getByTestId('provider-unavailable')).toBeVisible();
+  await expect(page.getByTestId('image-file')).toBeDisabled();
+});

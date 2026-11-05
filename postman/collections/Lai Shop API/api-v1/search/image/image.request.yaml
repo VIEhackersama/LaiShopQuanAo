@@ -1,0 +1,21 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/image"
+method: POST
+headers:
+  Content-Type: multipart/form-data
+  Accept: "*/*"
+body:
+  type: formdata
+  content:
+    - type: file
+      key: file
+      src: ""
+      description: "(Required) "
+    - type: text
+      key: options
+      value: '{"conditions":{"categoryId":257,"sizes":["st","s","","string","string","string","string","strin","string","string","string","string","string","string","string","str","s","string","string","string"],"colors":["string","st","string","string","st","string","string","string","string","","string","string","stri","string","string","string","string","string","string","string"],"minPrice":8704.195441678166,"maxPrice":9675.703370012343,"sort":"PRICE_DESC"},"region":{"x":0.2133044812362641,"y":0.8427632940001786,"width":0.8316338397562504,"height":0.5537589567247778}}'
+      description: "(Required) "
+settings: {}
+examples: ./.resources/image.resources/examples
+order: 1000

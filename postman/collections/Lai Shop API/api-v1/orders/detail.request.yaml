@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/orders/:id"
+method: GET
+headers:
+  Accept: "*/*"
+pathVariables:
+  - key: id
+    value: "4079"
+    disabled: false
+    description: "(Required) "
+settings: {}
+examples: ./.resources/detail.resources/examples
+order: 3000

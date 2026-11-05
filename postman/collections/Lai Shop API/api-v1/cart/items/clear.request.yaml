@@ -1,0 +1,9 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/cart/items"
+method: DELETE
+headers:
+  Accept: "*/*"
+settings: {}
+examples: ./.resources/clear.resources/examples
+order: 2000

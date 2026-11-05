@@ -1,0 +1,22 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/auth/csrf?token=string&parameterName=string&headerName=string"
+method: GET
+headers:
+  Accept: "*/*"
+queryParams:
+  - key: token
+    value: string
+    disabled: false
+    description: "(Required) "
+  - key: parameterName
+    value: string
+    disabled: false
+    description: "(Required) "
+  - key: headerName
+    value: string
+    disabled: false
+    description: "(Required) "
+settings: {}
+examples: ./.resources/csrf.resources/examples
+order: 5000

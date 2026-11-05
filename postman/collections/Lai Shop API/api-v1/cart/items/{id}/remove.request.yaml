@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/cart/items/:id"
+method: DELETE
+headers:
+  Accept: "*/*"
+pathVariables:
+  - key: id
+    value: "4079"
+    disabled: false
+    description: "(Required) "
+settings: {}
+examples: ./.resources/remove.resources/examples
+order: 1000

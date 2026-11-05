@@ -1,0 +1,17 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/search/voice"
+method: POST
+headers:
+  Content-Type: multipart/form-data
+  Accept: "*/*"
+body:
+  type: formdata
+  content:
+    - type: file
+      key: file
+      src: ""
+      description: "(Required) "
+settings: {}
+examples: ./.resources/voice.resources/examples
+order: 1000

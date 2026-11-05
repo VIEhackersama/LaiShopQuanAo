@@ -1,0 +1,22 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/orders"
+method: POST
+headers:
+  Idempotency-Key: string
+  Content-Type: application/json
+  Accept: "*/*"
+body:
+  type: json
+  content: |-
+    {
+      "expectedTotal": 9773.293589241803,
+      "paymentMethod": "COD",
+      "receiverName": "string",
+      "receiverPhone": "8776152321",
+      "shippingAddress": "string",
+      "cartVersion": 4857
+    }
+settings: {}
+examples: ./.resources/place.resources/examples
+order: 2000

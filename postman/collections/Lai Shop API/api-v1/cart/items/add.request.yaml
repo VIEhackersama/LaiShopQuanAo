@@ -1,0 +1,17 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/cart/items"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: "*/*"
+body:
+  type: json
+  content: |-
+    {
+      "variantId": 5237,
+      "quantity": 6173
+    }
+settings: {}
+examples: ./.resources/add.resources/examples
+order: 1000

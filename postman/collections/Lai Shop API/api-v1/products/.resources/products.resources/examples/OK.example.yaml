@@ -1,0 +1,60 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/products?categoryId=6305&sizes=string,string,st,string,string,string,strin,string,string,string,string,string,string,string,string,string,s,string,string,string&colors=string,string,string,string,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string&minPrice=9367.283696774393&maxPrice=9214.218617416918&sort=PRICE_ASC&page=7406&pageSize=7406"
+  method: GET
+  headers:
+    Accept: "*/*"
+  queryParams:
+    categoryId: "6305"
+    sizes: string,string,st,string,string,string,strin,string,string,string,string,string,string,string,string,string,s,string,string,string
+    colors: string,string,string,string,string,string,string,string,str,string,string,string,string,string,string,string,string,string,string,string
+    minPrice: "9367.283696774393"
+    maxPrice: "9214.218617416918"
+    sort: PRICE_ASC
+    page: "7406"
+    pageSize: "7406"
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: "*/*"
+  body:
+    type: json
+    content: |-
+      {
+        "items": [
+          {
+            "id": 9226,
+            "name": "string",
+            "description": "string",
+            "imageUrl": "string",
+            "minPrice": "string",
+            "maxPrice": "string",
+            "colors": [
+              "string",
+              "string"
+            ],
+            "inStock": true
+          },
+          {
+            "id": 2901,
+            "name": "string",
+            "description": "string",
+            "imageUrl": "string",
+            "minPrice": "string",
+            "maxPrice": "string",
+            "colors": [
+              "string",
+              "string"
+            ],
+            "inStock": false
+          }
+        ],
+        "page": 3819,
+        "pageSize": 2826,
+        "total": 5042
+      }
+order: 1000

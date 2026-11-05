@@ -1,0 +1,9 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/v1/cart"
+method: GET
+headers:
+  Accept: "*/*"
+settings: {}
+examples: ./.resources/view.resources/examples
+order: 1000
