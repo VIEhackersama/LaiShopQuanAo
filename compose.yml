@@ -13,6 +13,11 @@ services:
       timeout: 3s
       retries: 15
     restart: unless-stopped
+  clip-service:
+    build: ./clip-service
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
   backend:
     build: ./backend
     environment:
@@ -39,7 +44,7 @@ services:
       AI_MODEL: ${AI_MODEL:-qwen3:8b}
       AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-60}
       CLIP_SEARCH_ENABLED: ${CLIP_SEARCH_ENABLED:-true}
-      CLIP_SERVICE_URL: ${CLIP_SERVICE_URL:-http://host.docker.internal:8001}
+      CLIP_SERVICE_URL: ${CLIP_SERVICE_URL:-http://clip-service:8001}
     volumes:
       - media_data:/app/media
     ports:
@@ -47,6 +52,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      clip-service:
+        condition: service_started
     restart: unless-stopped
   web:
     build: ./frontend
