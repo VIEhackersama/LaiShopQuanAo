@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17
+    image: pgvector/pgvector:pg17
     environment:
       POSTGRES_DB: laishop
       POSTGRES_USER: laishop
@@ -38,6 +38,8 @@ services:
       AI_OLLAMA_URL: ${AI_OLLAMA_URL:-http://host.docker.internal:11434}
       AI_MODEL: ${AI_MODEL:-qwen3:8b}
       AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-60}
+      CLIP_SEARCH_ENABLED: ${CLIP_SEARCH_ENABLED:-true}
+      CLIP_SERVICE_URL: ${CLIP_SERVICE_URL:-http://host.docker.internal:8001}
     volumes:
       - media_data:/app/media
     ports:
@@ -57,7 +59,7 @@ services:
     depends_on: [backend]
     restart: unless-stopped
   backup:
-    image: postgres:17
+    image: pgvector/pgvector:pg17
     environment:
       PGPASSWORD: ${DATABASE_PASSWORD}
     entrypoint: [/bin/sh, -c]
